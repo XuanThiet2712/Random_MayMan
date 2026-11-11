@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ai là người xui? v2</title>
+<style>
+:root{--bg:#fff6e0;--dot:#ffe2a3;--panel:#ffffff;--ink:#2a1f4d;--mute:#6f6693;--line:#2a1f4d;--a:#ff4f7b;--b:#ffc933;--c:#2fbf9b;--shadow:#2a1f4d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--bg:#1b1535;--dot:#2a2150;--panel:#2a2250;--ink:#fff3d6;--mute:#b3a9d9;--line:#fff3d6;--shadow:#0c0820}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg) radial-gradient(var(--dot) 2px,transparent 2px) 0 0/26px 26px;color:var(--ink);font-family:"Baloo 2","Trebuchet MS",system-ui,sans-serif;font-size:17px;min-height:100vh}
+main{max-width:760px;margin:0 auto;padding:18px 16px 40px}
+h1{font-size:clamp(34px,8vw,56px);line-height:1;margin:6px 0 4px;font-weight:800;animation:wob 3s ease-in-out infinite alternate}
+@keyframes wob{from{transform:rotate(-2deg)}to{transform:rotate(1.5deg) scale(1.03)}}
+.sub{color:var(--mute);margin:0 0 18px}
+.box{background:var(--panel);border:3px solid var(--line);border-radius:18px;box-shadow:5px 5px 0 var(--shadow);padding:14px;margin-bottom:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{display:flex;align-items:center;gap:6px;border:2px solid var(--line);border-radius:999px;padding:2px 10px 2px 3px;font-weight:700;color:#2a1f4d}
+.ph{width:30px;height:30px;border-radius:50%;background:#fff;display:grid;place-items:center;cursor:pointer;overflow:hidden;font-size:15px}
+.ph img,.fi{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.x{cursor:pointer;opacity:.6}.x:hover{opacity:1}
+.row{display:flex;gap:8px}
+input[type=text]{flex:1;min-width:0;font:inherit;padding:8px 12px;border:3px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)}
+button{font:inherit;font-weight:800;border:3px solid var(--line);border-radius:12px;padding:8px 16px;background:var(--c);color:#12302a;cursor:pointer;box-shadow:3px 3px 0 var(--shadow)}
+button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--shadow)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.tab{background:var(--panel);color:var(--ink);padding:8px 4px;font-size:15px;line-height:1.15}
+.tab span{display:block;font-size:28px}
+.tab.on{background:var(--a);color:#fff;animation:pulse .8s infinite alternate}
+@keyframes pulse{to{transform:scale(1.05)}}
+.opts{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:12px;color:var(--mute);font-size:15px}
+select{font:inherit;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+#stage{min-height:260px;display:flex;flex-direction:column;justify-content:center}
+.lane{position:relative;height:42px;border-bottom:2px dashed var(--mute);margin-bottom:4px}
+.lane::after{content:"🏁";position:absolute;right:0;top:6px}
+.run{position:absolute;top:0;white-space:nowrap;font-weight:700;font-size:15px;display:flex;align-items:center;gap:4px}
+.run .f{width:36px;height:36px;font-size:28px;line-height:36px}
+.big{display:flex;align-items:center;justify-content:center;gap:12px;font-size:clamp(32px,9vw,58px);font-weight:800;text-align:center;padding:22px 10px;border:3px solid var(--line);border-radius:16px;background:var(--b);color:#2a1f4d;margin-bottom:12px;min-height:110px}
+.big img{height:64px}.big .fi{width:64px}
+.ring{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.p{display:flex;align-items:center;gap:5px;border:3px solid var(--line);border-radius:14px;padding:4px 12px;font-weight:700;background:var(--bg);transition:.1s}
+.p .fi{width:24px;height:24px}
+.p.hot{background:var(--a);color:#fff;transform:scale(1.18) rotate(-3deg)}
+.ball{width:80px;height:80px;border-radius:50%;border:3px solid var(--line);display:grid;place-items:center;overflow:hidden;font-weight:800;text-align:center;font-size:15px;color:#2a1f4d;transition:.4s}
+.ball.out{transform:scale(0) rotate(180deg);opacity:0}
+.drum{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.drum.spin .ball{animation:jig .25s infinite alternate}
+.drum.spin .ball:nth-child(even){animation-delay:.12s}
+@keyframes jig{from{translate:-5px 4px}to{translate:5px -5px}}
+/* arena (UFO + black hole) */
+.arena{position:relative;height:330px;border:3px solid var(--line);border-radius:16px;overflow:hidden;background:radial-gradient(circle,#fff 0 1px,transparent 2px) 0 0/90px 70px,radial-gradient(circle,#ffe9a8 0 1.5px,transparent 2px) 30px 20px/60px 80px,linear-gradient(#0e0a2e,#3b2a7a);background-size:cover}
+.ground{position:absolute;left:0;right:0;bottom:0;height:36px;background:#2fbf9b;border-top:3px solid #12302a}
+.av{position:absolute;bottom:32px;width:72px;margin-left:-36px;text-align:center;font-size:13px;font-weight:800;color:#fff;text-shadow:0 1px 3px #000;transition:transform 2.3s ease-in,opacity 2.3s ease-in;z-index:1}
+.av .f{display:block;height:48px;font-size:40px;line-height:48px;animation:hop .7s infinite alternate ease-out}
+.av .fi{width:48px;height:48px;border:2px solid #fff}
+@keyframes hop{to{translate:0 -9px}}
+.av.abd{transform:translateY(-210px) scale(.1) rotate(900deg);opacity:0}
+.ufo{position:absolute;top:12px;left:50%;width:120px;margin-left:-60px;text-align:center;transition:left .8s ease-in-out,top 1.3s ease-in;z-index:3}
+.ufo .ui{position:relative;z-index:2;display:block;font-size:64px;line-height:64px;animation:bob 1s infinite alternate ease-in-out}
+.ufo img{height:72px}
+@keyframes bob{to{translate:0 8px}}
+.beam{position:absolute;top:50px;left:10px;width:100px;height:230px;background:linear-gradient(rgba(255,244,130,.9),rgba(255,244,130,.15));clip-path:polygon(32% 0,68% 0,100% 100%,0 100%);opacity:0;transition:opacity .3s}
+.hole{position:absolute;left:50%;top:50%;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;background:conic-gradient(#000,#7a3cff,#000,#ff4f7b,#000,#2fbf9b,#000);box-shadow:0 0 40px 12px #7a3cff;animation:spin 1.2s linear infinite}
+.hole::after{content:"";position:absolute;inset:14px;border-radius:50%;background:#000}
+@keyframes spin{to{rotate:360deg}}
+.orb{position:absolute;left:0;top:0;width:70px;margin:-30px 0 0 -35px;text-align:center;color:#fff;font-size:12px;font-weight:800;text-shadow:0 1px 3px #000}
+.orb .f{display:block;height:44px;font-size:36px;line-height:44px}.orb .fi{width:44px;height:44px;border:2px solid #fff}
+.wheels{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.wb{text-align:center;font-weight:800;flex:1;min-width:150px;max-width:300px}
+.wrap{position:relative;padding-top:16px;margin-top:6px}
+.wrap canvas{width:100%;height:auto;border-radius:50%;box-shadow:0 0 0 4px var(--line),4px 6px 0 4px var(--shadow);background:#fff}
+.ptr{position:absolute;top:0;left:50%;margin-left:-13px;z-index:3;border:13px solid transparent;border-top:28px solid var(--a);border-bottom:0;filter:drop-shadow(0 2px 0 #2a1f4d)}
+#go{width:100%;font-size:26px;padding:12px;background:var(--a);color:#fff;margin-top:8px}
+#ov{position:fixed;inset:0;background:rgba(20,10,50,.78);display:none;place-items:center;padding:20px;z-index:20}
+#ov.show{display:grid}
+.card{background:var(--panel);border:4px solid var(--line);border-radius:22px;box-shadow:8px 8px 0 var(--shadow);padding:24px 20px;text-align:center;max-width:420px;width:100%;animation:pop .5s cubic-bezier(.2,1.6,.4,1);position:relative;z-index:2}
+.card h2{font-size:clamp(40px,12vw,68px);margin:4px 0;line-height:1;color:var(--a)}
+.card p{margin:6px 0 14px}
+#em{font-size:56px;height:96px;display:grid;place-items:center}#em img{height:96px;width:96px;border-radius:50%;object-fit:cover;border:4px solid var(--line)}
+.pun{background:var(--b);color:#2a1f4d;border-radius:12px;padding:8px 12px;font-weight:700;border:2px dashed #2a1f4d}
+@keyframes pop{from{transform:scale(.3) rotate(-12deg);opacity:0}}
+.cf{position:fixed;top:-40px;font-size:28px;z-index:1;animation:fall 2.8s linear forwards}
+@keyframes fall{to{transform:translateY(115vh) rotate(720deg)}}
+.shake{animation:shk .4s}
+@keyframes shk{25%{translate:-8px 4px}50%{translate:8px -4px}75%{translate:-6px -3px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<main>
+<h1>Ai là người xui? 🎲</h1>
+<p class="sub">Thêm cả nhóm, bấm vào 📷 để gắn ảnh mặt từng người, rồi chọn một trò để chọn người bị dính.</p>
+
+<div class="box">
+  <div class="row"><input id="name" type="text" maxlength="14" placeholder="Nhập tên rồi bấm Enter"><button id="add">Thêm</button></div>
+  <div class="chips" id="chips"></div>
+  <input type="file" id="file" accept="image/*" hidden>
+</div>
+
+<div class="tabs" id="tabs"></div>
+
+<div class="box" id="game">
+  <div class="opts" id="opts"></div>
+  <div id="stage"></div>
+  <button id="go">Bắt đầu!</button>
+</div>
+</main>
+
+<div id="ov"><div class="card"><div id="em">🎯</div><p>Người dính là…</p><h2 id="who"></h2><p class="pun" id="pun"></p><button id="again">Chơi lại</button></div></div>
+
+<script>
+/* ===== TÙY CHỈNH ẢNH: dán đường dẫn ảnh (hoặc tên file cùng thư mục) vào giữa dấu "" =====
+   ufo: ảnh đĩa bay | bomb: ảnh quả bom | bg: ảnh nền bầu trời | ground: (để trống cũng được) */
+const ASSETS={ufo:"",bomb:"",bg:""};
+/* ===================================================================================== */
+const $=s=>document.querySelector(s);
+let players=[{n:"Thiết"},{n:"Thanh"},{n:"Hoàng"},{n:"Thịnh"},{n:"Đức"}],mode="ufo",busy=false,raceRule="first",punish=true,upIdx=-1;
+const MODES=[["ufo","🛸","Đĩa bay"],["hole","🕳️","Hố đen"],["race","🏇","Đua thú"],["bomb","💣","Chuyền bom"],["slot","🎰","Máy quay"],["ball","🎱","Loại trừ"],["lq","🎡","Vòng quay LQ"]];
+const EMO=["🐎","🐢","🐇","🦆","🐕","🐈","🦊","🐸","🐧","🦄","🐙","🦖"];
+const PUN=["Hát một bài trước cả nhóm","Mời cả nhóm ly nước","Kể một bí mật nhỏ","Nhảy 10 giây không nhạc","Nói giọng nũng nịu suốt 5 phút","Chụp một tấm ảnh xấu nhất đăng story","Làm 15 cái hít đất","Đọc to tin nhắn cuối cùng trong điện thoại","Bắt chước một người trong nhóm cho cả bàn đoán","Làm bồi bàn phục vụ cả nhóm 10 phút"];
+const col=i=>`hsl(${(i*47+10)%360} 85% 68%)`;
+const rnd=n=>Math.floor(Math.random()*n);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const ic=(k,e)=>ASSETS[k]?`<img src="${ASSETS[k]}" alt="">`:e;
+const face=(i,s)=>players[i].img?`<img class="fi" src="${players[i].img}" alt="" style="${s?`width:${s}px;height:${s}px`:""}">`:EMO[i%EMO.length];
+let ac;
+function beep(f=440,d=.08,type="square"){if(!$("#snd").checked)return;try{ac=ac||new AudioContext();const o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=f;g.gain.value=.05;o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d)}catch(e){}}
+const fanfare=()=>[523,659,784,1047,1319].forEach((f,i)=>setTimeout(()=>beep(f,.2,"triangle"),i*130));
+
+function renderChips(){
+  $("#chips").innerHTML=players.map((p,i)=>`<span class="chip" style="background:${col(i)}"><span class="ph" data-up="${i}" title="Gắn ảnh">${p.img?`<img src="${p.img}" alt="">`:"📷"}</span>${p.n}<span class="x" data-del="${i}">✕</span></span>`).join("")||'<span style="color:var(--mute)">Chưa có ai. Thêm ít nhất 2 người nhé.</span>';
+  $("#go").disabled=players.length<2||busy;
+  renderStage();
+}
+function addName(){
+  const v=$("#name").value.trim();
+  if(v&&!busy&&players.length<12&&!players.some(p=>p.n===v))players.push({n:v});
+  $("#name").value="";renderChips();
+}
+$("#add").onclick=addName;
+$("#name").onkeydown=e=>{if(e.key==="Enter")addName()};
+$("#chips").onclick=e=>{
+  if(busy)return;
+  const u=e.target.closest("[data-up]"),d=e.target.closest("[data-del]");
+  if(u){upIdx=+u.dataset.up;$("#file").value="";$("#file").click()}
+  if(d){players.splice(+d.dataset.del,1);renderChips()}
+};
+$("#file").onchange=e=>{
+  const f=e.target.files[0];if(!f||upIdx<0)return;
+  const r=new FileReader();
+  r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement("canvas");c.width=c.height=128;const x=c.getContext("2d"),s=Math.min(im.width,im.height);x.drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,128,128);players[upIdx].img=c.toDataURL("image/jpeg",.85);renderChips()};im.src=r.result};
+  r.readAsDataURL(f);
+};
+
+function renderTabs(){
+  $("#tabs").innerHTML=MODES.map(m=>`<button class="tab ${m[0]===mode?"on":""}" data-m="${m[0]}"><span>${m[1]}</span>${m[2]}</button>`).join("");
+  $("#opts").innerHTML=(mode==="race"?`Người dính: <select id="rule"><option value="first" ${raceRule==="first"?"selected":""}>về nhất</option><option value="last" ${raceRule==="last"?"selected":""}>về chót</option></select>`:"")+(mode==="lq"?`<label style="width:100%">Các đường (cách nhau bằng dấu phẩy):<input type="text" id="lanes" value="${lanes.join(", ")}" style="width:100%;margin-top:4px"></label>`:"")+`<label><input type="checkbox" id="pn" ${punish?"checked":""}> Kèm hình phạt</label><label><input type="checkbox" id="snd" checked> Âm thanh</label>`;
+  const r=$("#rule");if(r)r.onchange=()=>raceRule=r.value;
+  const ln=$("#lanes");if(ln)ln.onchange=()=>{if(!busy){lanes=ln.value.split(",").map(x=>x.trim()).filter(Boolean);renderStage()}};
+  $("#pn").onchange=e=>punish=e.target.checked;
+}
+$("#tabs").onclick=e=>{const b=e.target.closest(".tab");if(b&&!busy){mode=b.dataset.m;renderTabs();renderStage()}};
+
+const arenaBg=()=>ASSETS.bg?`style="background-image:url('${ASSETS.bg}')"`:"";
+let items=[];
+function renderStage(){
+  const s=$("#stage"),n=players.length;$("#go").textContent=mode==="lq"?"🎡 Quay!":"Bắt đầu!";
+  if(mode==="race")s.innerHTML=players.map((p,i)=>`<div class="lane"><div class="run" id="r${i}" style="left:0"><span class="f">${face(i)}</span>${p.n}</div></div>`).join("");
+  else if(mode==="bomb")s.innerHTML=`<div class="big" id="bn">${ic("bomb","💣")} ???</div><div class="ring">${players.map((p,i)=>`<span class="p" id="p${i}">${p.img?face(i):""}${p.n}</span>`).join("")}</div>`;
+  else if(mode==="slot")s.innerHTML=`<div class="big" id="reel">🎰 ???</div><p style="text-align:center;color:var(--mute);margin:0">Tên chạy loạn rồi dừng lại ở một người</p>`;
+  else if(mode==="ball")s.innerHTML=`<div class="drum" id="drum">${players.map((p,i)=>`<div class="ball" id="b${i}" style="background:${col(i)}">${p.img?face(i,80):p.n}</div>`).join("")}</div><p style="text-align:center;color:var(--mute)">Mỗi lượt loại một người. Người cuối cùng ở lại là người dính.</p>`;
+  else if(mode==="ufo")s.innerHTML=`<div class="arena" ${arenaBg()}><div class="ground"></div><div class="ufo" id="ufo"><div class="beam" id="beam"></div><span class="ui">${ic("ufo","🛸")}</span></div>${players.map((p,i)=>`<div class="av" id="a${i}" style="left:${(i+.5)/n*100}%"><span class="f" style="animation-delay:${i*.13}s">${face(i)}</span>${p.n}</div>`).join("")}</div>`;
+  else if(mode==="lq"){s.innerHTML=`<div class="wheels"><div class="wb">👤 Người chơi<div class="wrap"><i class="ptr"></i><canvas id="w1" width="300" height="300"></canvas></div></div><div class="wb">🗺️ Đường đi<div class="wrap"><i class="ptr"></i><canvas id="w2" width="300" height="300"></canvas></div></div></div><div class="ring" id="lqres" style="margin-top:14px"></div>`;initLq()}
+  else{s.innerHTML=`<div class="arena" id="arena" ${arenaBg()}><div class="hole"></div>${players.map((p,i)=>`<div class="orb" id="o${i}"><span class="f">${face(i)}</span>${p.n}</div>`).join("")}</div>`;initHole()}
+}
+
+async function play(){
+  if(mode==="lq")return lqPlay();
+  if(busy||players.length<2)return;
+  busy=true;$("#go").disabled=true;renderStage();
+  const w=await({ufo,hole,race,bomb,slot,ball}[mode])();
+  await sleep(400);
+  const p=players[w];
+  $("#em").innerHTML=p.img?`<img src="${p.img}" alt="">`:MODES.find(m=>m[0]===mode)[1];
+  $("#who").textContent=p.n;
+  $("#pun").style.display=punish?"block":"none";
+  $("#pun").textContent="Hình phạt: "+PUN[rnd(PUN.length)];
+  $("#ov").classList.add("show");
+  for(let i=0;i<45;i++){const c=document.createElement("span");c.className="cf";c.textContent=["🎉","✨","🎊","💥","⭐"][rnd(5)];c.style.left=Math.random()*100+"vw";c.style.animationDelay=Math.random()*1.2+"s";$("#ov").appendChild(c)}
+  fanfare();
+}
+$("#go").onclick=play;
+$("#again").onclick=()=>{$("#ov").classList.remove("show");document.querySelectorAll(".cf").forEach(e=>e.remove());busy=false;renderChips()};
+
+/* --- Đĩa bay --- */
+async function ufo(){
+  const n=players.length,w=rnd(n),U=$("#ufo"),B=$("#beam"),at=i=>(i+.5)/n*100+"%";
+  await sleep(600);
+  const hops=4+rnd(3);
+  for(let k=0;k<hops;k++){
+    U.style.left=at(rnd(n));beep(250+k*40,.3,"sine");
+    await sleep(900);B.style.opacity=.9;beep(180,.4,"sawtooth");
+    await sleep(450);B.style.opacity=0;await sleep(150);
+  }
+  U.style.left=at(w);await sleep(1000);
+  B.style.opacity=1;
+  for(let k=0;k<8;k++)setTimeout(()=>beep(200+k*90,.3,"sine"),k*250);
+  await sleep(500);$("#a"+w).classList.add("abd");
+  await sleep(2400);B.style.opacity=0;U.style.top="-120px";U.style.left="115%";
+  await sleep(1300);
+  return w;
+}
+/* --- Hố đen --- */
+function initHole(){
+  const ar=$("#arena"),W=ar.clientWidth,H=ar.clientHeight,n=players.length,R=Math.min(W,H)/2-38;
+  items=players.map((p,i)=>({el:$("#o"+i),a:i/n*Math.PI*2,r:R*(.72+Math.random()*.28),k:.65+Math.random()*.7}));
+  items.R=R;items.cx=W/2;items.cy=H/2;drawHole();
+}
+function drawHole(){const R=items.R;items.forEach(it=>{it.el.style.transform=`translate(${items.cx+Math.cos(it.a)*it.r}px,${items.cy+Math.sin(it.a)*it.r}px) scale(${.35+.65*Math.min(1,it.r/R)})`})}
+function hole(){
+  return new Promise(res=>{
+    initHole();let t=0;
+    (function f(){
+      t++;
+      for(let i=0;i<items.length;i++){
+        const it=items[i];
+        it.r-=(.12+t*.0007)*it.k;
+        it.a+=.025+(items.R/Math.max(it.r,10))*.012;
+        if(it.r<14){it.el.style.opacity=0;drawHole();beep(120,.5,"sawtooth");document.querySelector(".arena").classList.add("shake");return res(i)}
+      }
+      if(t%12===0)beep(90+t/6,.05,"sine");
+      drawHole();requestAnimationFrame(f);
+    })();
+  });
+}
+/* --- Đua thú --- */
+function race(){
+  return new Promise(res=>{
+    const n=players.length,pos=Array(n).fill(0),done=[],w=Math.max(0,$("#stage").clientWidth-130),need=raceRule==="first"?1:n-1;
+    let tk=0;
+    const t=setInterval(()=>{
+      if(tk++%4===0)beep(300+rnd(200),.04);
+      for(let i=0;i<n;i++){
+        if(pos[i]>=100)continue;
+        pos[i]=Math.min(100,pos[i]+Math.random()*2.4);
+        if(pos[i]>=100)done.push(i);
+        $("#r"+i).style.left=(pos[i]/100*w)+"px";
+      }
+      if(done.length>=need){clearInterval(t);res(raceRule==="first"?done[0]:[...Array(n).keys()].find(i=>!done.includes(i)))}
+    },60);
+  });
+}
+/* --- Chuyền bom --- */
+async function bomb(){
+  const n=players.length,T=5000+rnd(4500),t0=performance.now();
+  let cur=rnd(n);
+  while(true){
+    const el=performance.now()-t0;
+    document.querySelectorAll(".p").forEach(e=>e.classList.remove("hot"));
+    $("#p"+cur).classList.add("hot");
+    $("#bn").innerHTML=ic("bomb","💣")+" "+players[cur].n;
+    beep(300+800*(el/T),.07);
+    if(el>=T)break;
+    await sleep(520-400*(el/T));
+    let nx;do{nx=rnd(n)}while(nx===cur);cur=nx;
+  }
+  $("#bn").innerHTML="💥 "+players[cur].n;$("#game").classList.add("shake");beep(80,.6,"sawtooth");
+  return cur;
+}
+/* --- Máy quay --- */
+async function slot(){
+  const n=players.length,w=rnd(n);let d=45;const el=$("#reel");
+  while(d<420){const k=rnd(n);el.innerHTML="🎰 "+(players[k].img?face(k):"")+players[k].n;beep(500+rnd(500),.04);await sleep(d);d*=1.1}
+  el.innerHTML="🎉 "+(players[w].img?face(w):"")+players[w].n;
+  return w;
+}
+/* --- Loại trừ --- */
+async function ball(){
+  const alive=[...players.keys()];
+  $("#drum").classList.add("spin");await sleep(1400);
+  while(alive.length>1){
+    const i=alive.splice(rnd(alive.length),1)[0];
+    $("#b"+i).classList.add("out");beep(400,.15,"triangle");
+    await sleep(900);
+  }
+  $("#drum").classList.remove("spin");
+  return alive[0];
+}
+/* --- Vòng quay Liên Quân: 2 vòng (người chơi + đường) --- */
+let lanes=["Đường Caesar","Đường Giữa","Đường Rồng","Đi Rừng","Hỗ Trợ"],lq={pl:[],ln:[],res:[],r1:0,r2:0,done:false};
+const LI={"Đường Caesar":"⚔️","Đường Giữa":"🔮","Đường Rồng":"🐲","Đi Rừng":"🌲","Hỗ Trợ":"🛡️"};
+function drawW(cv,labels,cols){
+  const x=cv.getContext("2d"),n=labels.length,c=150,R=146;x.clearRect(0,0,300,300);
+  if(!n){x.fillStyle="#999";x.font="800 26px sans-serif";x.textAlign="center";x.fillText("Hết!",c,c+8);return}
+  const sg=2*Math.PI/n;
+  labels.forEach((t,i)=>{
+    x.beginPath();x.moveTo(c,c);x.arc(c,c,R,-Math.PI/2+i*sg,-Math.PI/2+(i+1)*sg);x.closePath();
+    x.fillStyle=cols[i];x.fill();x.lineWidth=3;x.strokeStyle="#2a1f4d";x.stroke();
+    x.save();x.translate(c,c);x.rotate(-Math.PI/2+(i+.5)*sg);x.fillStyle="#2a1f4d";
+    x.font="800 "+(n>6?14:17)+"px sans-serif";x.textAlign="right";x.textBaseline="middle";x.fillText(t,R-14,0);x.restore();
+  });
+  x.beginPath();x.arc(c,c,18,0,7);x.fillStyle="#2a1f4d";x.fill();
+}
+function drawLq(){
+  for(const [id,k] of [["w1","r1"],["w2","r2"]]){const cv=$("#"+id);cv.style.transition="none";cv.style.transform="rotate(0deg)";lq[k]=0;void cv.offsetWidth}
+  drawW($("#w1"),lq.pl.map(i=>players[i].n),lq.pl.map(i=>col(i)));
+  drawW($("#w2"),lq.ln.map(i=>(LI[lanes[i]]||"")+" "+lanes[i]),lq.ln.map(i=>col(i+3)));
+}
+function showRes(){
+  const el=$("#lqres");if(!el)return;
+  let h=lq.done?'<div style="width:100%;text-align:center;font-size:24px;font-weight:800">🎉 Đội hình đã chốt!</div>':"";
+  h+=lq.res.map(([p,l])=>`<span class="p" style="background:${col(p)};color:#2a1f4d">${players[p].img?face(p):""}${players[p].n} → ${LI[lanes[l]]||""} ${lanes[l]}</span>`).join("");
+  if(lq.done)h+=lq.pl.map(p=>`<span class="p" style="background:${col(p)};color:#2a1f4d">${players[p].n} → 🪑 Dự bị</span>`).join("");
+  el.innerHTML=h;
+}
+function initLq(){lq={pl:players.map((_,i)=>i),ln:lanes.map((_,i)=>i),res:[],r1:0,r2:0,done:false};drawLq();showRes()}
+function spinTo(cv,n,i,k,dur){
+  const sg=360/n,cur=lq[k],jit=(Math.random()-.5)*sg*.6;
+  const delta=(((-(i+.5)*sg+jit-cur)%360)+360)%360,tg=cur+360*(5+rnd(3))+delta;
+  cv.style.transition=`transform ${dur}s cubic-bezier(.12,.7,.1,1)`;cv.style.transform=`rotate(${tg}deg)`;lq[k]=tg;
+}
+async function lqPlay(){
+  if(busy)return;
+  if(lq.done){renderStage();$("#go").textContent="🎡 Quay!";return}
+  if(!lq.pl.length||!lq.ln.length)return;
+  busy=true;$("#go").disabled=true;
+  const pi=rnd(lq.pl.length),li=rnd(lq.ln.length);
+  spinTo($("#w1"),lq.pl.length,pi,"r1",4);spinTo($("#w2"),lq.ln.length,li,"r2",5.2);
+  let t=0,d=70;while(t<5100){setTimeout(()=>beep(700,.03),t);t+=d;d*=1.09}
+  await sleep(5500);
+  const p=lq.pl.splice(pi,1)[0],l=lq.ln.splice(li,1)[0];
+  lq.res.push([p,l]);
+  if(!lq.pl.length||!lq.ln.length){lq.done=true;fanfare();$("#go").textContent="🔄 Quay lại từ đầu"}
+  else{beep(880,.25,"triangle");$("#go").textContent="🎡 Quay tiếp!"}
+  showRes();drawLq();
+  busy=false;$("#go").disabled=false;
+}
+renderTabs();renderChips();
+</script>
+</body>
+</html>
