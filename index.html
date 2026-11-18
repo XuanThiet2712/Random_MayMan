@@ -24,7 +24,8 @@ input[type=text]{flex:1;min-width:0;font:inherit;padding:8px 12px;border:3px sol
 button{font:inherit;font-weight:800;border:3px solid var(--line);border-radius:12px;padding:8px 16px;background:var(--c);color:#12302a;cursor:pointer;box-shadow:3px 3px 0 var(--shadow)}
 button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--shadow)}
 button:disabled{opacity:.5;cursor:not-allowed}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+@media (max-width:480px){.tabs{grid-template-columns:repeat(3,1fr)}}
 .tab{background:var(--panel);color:var(--ink);padding:8px 4px;font-size:15px;line-height:1.15}
 .tab span{display:block;font-size:28px}
 .tab.on{background:var(--a);color:#fff;animation:pulse .8s infinite alternate}
@@ -48,6 +49,28 @@ select{font:inherit;border:2px solid var(--line);border-radius:8px;background:va
 .drum.spin .ball{animation:jig .25s infinite alternate}
 .drum.spin .ball:nth-child(even){animation-delay:.12s}
 @keyframes jig{from{translate:-5px 4px}to{translate:5px -5px}}
+input[type=number]{font:inherit;width:64px;padding:2px 6px;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+/* đĩa bay chọn nhóm */
+.arena.auto{height:auto;padding:64px 10px 14px}
+.ufo.sm{width:80px;margin-left:0;transition:left .28s ease-in-out,top .28s ease-in-out,opacity .3s}
+.ufo.sm .ui{font-size:44px;line-height:44px}.ufo.sm img{height:44px}
+.ufo.sm .beam{top:38px;left:0;width:80px;height:46px}
+.gg{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.gc,.gs{color:#fff;text-align:center;border:2px solid rgba(255,255,255,.55);border-radius:10px;background:rgba(255,255,255,.14);font-weight:800;transition:transform 1s ease-in,opacity 1s ease-in,background .1s}
+.gc{padding:4px 0;line-height:1.1}.gc small{display:block;font-size:10px;opacity:.85}.gc b{font-size:19px}
+.gt{color:#fff;text-align:center;font-weight:800;margin:14px 0 8px;text-shadow:0 1px 3px #000}
+.seats{display:flex;gap:8px;transition:opacity .4s}.seats.off{opacity:.35}
+.gs{flex:1;min-width:0;padding:8px 2px;font-size:13px}.gs span{display:block;font-size:26px;line-height:30px}
+.gc.hot,.gs.hot{background:var(--a);transform:scale(1.15)}
+.gc.out,.gs.out{opacity:.2;transform:scale(.8)}
+.ufo.sm.chg{animation:shk .25s infinite}
+.gc{cursor:pointer}
+.gc.blink,.gs.blink{background:var(--b);color:#2a1f4d;transform:scale(1.22)}
+.gc.ex{opacity:.38;border-style:dashed;background:repeating-linear-gradient(45deg,rgba(255,255,255,.1) 0 6px,transparent 6px 12px)}
+.gc.dn{opacity:.5;border-color:#2fbf9b}
+.arena.tense{box-shadow:inset 0 0 70px 14px rgba(255,79,123,.5)}
+.arena{transition:box-shadow 1s}
+.gc.abd,.gs.abd{transform:translateY(-70px) scale(.1) rotate(720deg);opacity:0}
 /* arena (UFO + black hole) */
 .arena{position:relative;height:330px;border:3px solid var(--line);border-radius:16px;overflow:hidden;background:radial-gradient(circle,#fff 0 1px,transparent 2px) 0 0/90px 70px,radial-gradient(circle,#ffe9a8 0 1.5px,transparent 2px) 30px 20px/60px 80px,linear-gradient(#0e0a2e,#3b2a7a);background-size:cover}
 .ground{position:absolute;left:0;right:0;bottom:0;height:36px;background:#2fbf9b;border-top:3px solid #12302a}
@@ -107,7 +130,7 @@ select{font:inherit;border:2px solid var(--line);border-radius:8px;background:va
 </div>
 </main>
 
-<div id="ov"><div class="card"><div id="em">🎯</div><p>Người dính là…</p><h2 id="who"></h2><p class="pun" id="pun"></p><button id="again">Chơi lại</button></div></div>
+<div id="ov"><div class="card"><div id="em">🎯</div><p id="ovt">Người dính là…</p><h2 id="who"></h2><p class="pun" id="pun"></p><button id="again">Chơi lại</button></div></div>
 
 <script>
 /* ===== TÙY CHỈNH ẢNH: dán đường dẫn ảnh (hoặc tên file cùng thư mục) vào giữa dấu "" =====
@@ -116,7 +139,7 @@ const ASSETS={ufo:"",bomb:"",bg:""};
 /* ===================================================================================== */
 const $=s=>document.querySelector(s);
 let players=[{n:"Thiết"},{n:"Thanh"},{n:"Hoàng"},{n:"Thịnh"},{n:"Đức"}],mode="ufo",busy=false,raceRule="first",punish=true,upIdx=-1;
-const MODES=[["ufo","🛸","Đĩa bay"],["hole","🕳️","Hố đen"],["race","🏇","Đua thú"],["bomb","💣","Chuyền bom"],["slot","🎰","Máy quay"],["ball","🎱","Loại trừ"],["lq","🎡","Vòng quay LQ"]];
+const MODES=[["ufo","🛸","Đĩa bay"],["ufog","🛸","Đĩa bay nhóm"],["hole","🕳️","Hố đen"],["race","🏇","Đua thú"],["bomb","💣","Chuyền bom"],["slot","🎰","Máy quay"],["ball","🎱","Loại trừ"],["lq","🎡","Vòng quay LQ"]];
 const EMO=["🐎","🐢","🐇","🦆","🐕","🐈","🦊","🐸","🐧","🦄","🐙","🦖"];
 const PUN=["Hát một bài trước cả nhóm","Mời cả nhóm ly nước","Kể một bí mật nhỏ","Nhảy 10 giây không nhạc","Nói giọng nũng nịu suốt 5 phút","Chụp một tấm ảnh xấu nhất đăng story","Làm 15 cái hít đất","Đọc to tin nhắn cuối cùng trong điện thoại","Bắt chước một người trong nhóm cho cả bàn đoán","Làm bồi bàn phục vụ cả nhóm 10 phút"];
 const col=i=>`hsl(${(i*47+10)%360} 85% 68%)`;
@@ -130,7 +153,7 @@ const fanfare=()=>[523,659,784,1047,1319].forEach((f,i)=>setTimeout(()=>beep(f,.
 
 function renderChips(){
   $("#chips").innerHTML=players.map((p,i)=>`<span class="chip" style="background:${col(i)}"><span class="ph" data-up="${i}" title="Gắn ảnh">${p.img?`<img src="${p.img}" alt="">`:"📷"}</span>${p.n}<span class="x" data-del="${i}">✕</span></span>`).join("")||'<span style="color:var(--mute)">Chưa có ai. Thêm ít nhất 2 người nhé.</span>';
-  $("#go").disabled=players.length<2||busy;
+  $("#go").disabled=busy||(mode!=="ufog"&&players.length<2);
   renderStage();
 }
 function addName(){
@@ -155,10 +178,16 @@ $("#file").onchange=e=>{
 
 function renderTabs(){
   $("#tabs").innerHTML=MODES.map(m=>`<button class="tab ${m[0]===mode?"on":""}" data-m="${m[0]}"><span>${m[1]}</span>${m[2]}</button>`).join("");
-  $("#opts").innerHTML=(mode==="race"?`Người dính: <select id="rule"><option value="first" ${raceRule==="first"?"selected":""}>về nhất</option><option value="last" ${raceRule==="last"?"selected":""}>về chót</option></select>`:"")+(mode==="lq"?`<label style="width:100%">Các đường (cách nhau bằng dấu phẩy):<input type="text" id="lanes" value="${lanes.join(", ")}" style="width:100%;margin-top:4px"></label>`:"")+`<label><input type="checkbox" id="pn" ${punish?"checked":""}> Kèm hình phạt</label><label><input type="checkbox" id="snd" checked> Âm thanh</label>`;
+  $("#opts").innerHTML=(mode==="race"?`Người dính: <select id="rule"><option value="first" ${raceRule==="first"?"selected":""}>về nhất</option><option value="last" ${raceRule==="last"?"selected":""}>về chót</option></select>`:"")+(mode==="lq"?`<label style="width:100%">Các đường (cách nhau bằng dấu phẩy):<input type="text" id="lanes" value="${lanes.join(", ")}" style="width:100%;margin-top:4px"></label>`:"")+(mode==="ufog"?`<label>Số nhóm: <input type="number" id="gn" min="2" max="30" value="${G}"></label><label>Người/nhóm: <input type="number" id="gp" min="2" max="8" value="${P}"></label><label>Tốc độ: <select id="spd">${[["Vừa",1],["Chậm",1.4],["Siêu hồi hộp",2]].map(o=>`<option value="${o[1]}" ${o[1]===SPD?"selected":""}>${o[0]}</option>`).join("")}</select></label><label><input type="checkbox" id="nr" ${NR?"checked":""}> Không bốc lại nhóm đã trúng</label><label style="width:100%">Khóa nhóm (không bị chọn), ví dụ nhóm trình bày: <input type="text" id="exin" value="${[...ex].sort((a,b)=>a-b).map(i=>i+1).join(", ")}" placeholder="vd: 16, 3" style="width:100%;margin-top:4px"></label>`:`<label><input type="checkbox" id="pn" ${punish?"checked":""}> Kèm hình phạt</label>`)+`<label><input type="checkbox" id="snd" checked> Âm thanh</label>`;
   const r=$("#rule");if(r)r.onchange=()=>raceRule=r.value;
   const ln=$("#lanes");if(ln)ln.onchange=()=>{if(!busy){lanes=ln.value.split(",").map(x=>x.trim()).filter(Boolean);renderStage()}};
-  $("#pn").onchange=e=>punish=e.target.checked;
+  const pn=$("#pn");if(pn)pn.onchange=e=>punish=e.target.checked;
+  const sp=$("#spd");if(sp)sp.onchange=()=>SPD=+sp.value;
+  const ei=$("#exin");if(ei)ei.onchange=()=>{if(busy)return;ex=new Set(ei.value.split(/[,;\s]+/).map(Number).filter(n=>Number.isInteger(n)&&n>=1&&n<=G).map(n=>n-1));syncEx();renderStage()};
+  const nr=$("#nr");if(nr)nr.onchange=()=>{NR=nr.checked;if(!busy)renderStage()};
+  const gn=$("#gn"),gp=$("#gp");
+  if(gn)gn.onchange=()=>{if(busy)return;G=Math.max(2,Math.min(30,+gn.value||18));gn.value=G;ex=new Set([...ex].filter(i=>i<G));hist=[];syncEx();renderStage()};
+  if(gp)gp.onchange=()=>{if(busy)return;P=Math.max(2,Math.min(8,+gp.value||4));gp.value=P;renderStage()};
 }
 $("#tabs").onclick=e=>{const b=e.target.closest(".tab");if(b&&!busy){mode=b.dataset.m;renderTabs();renderStage()}};
 
@@ -171,24 +200,28 @@ function renderStage(){
   else if(mode==="slot")s.innerHTML=`<div class="big" id="reel">🎰 ???</div><p style="text-align:center;color:var(--mute);margin:0">Tên chạy loạn rồi dừng lại ở một người</p>`;
   else if(mode==="ball")s.innerHTML=`<div class="drum" id="drum">${players.map((p,i)=>`<div class="ball" id="b${i}" style="background:${col(i)}">${p.img?face(i,80):p.n}</div>`).join("")}</div><p style="text-align:center;color:var(--mute)">Mỗi lượt loại một người. Người cuối cùng ở lại là người dính.</p>`;
   else if(mode==="ufo")s.innerHTML=`<div class="arena" ${arenaBg()}><div class="ground"></div><div class="ufo" id="ufo"><div class="beam" id="beam"></div><span class="ui">${ic("ufo","🛸")}</span></div>${players.map((p,i)=>`<div class="av" id="a${i}" style="left:${(i+.5)/n*100}%"><span class="f" style="animation-delay:${i*.13}s">${face(i)}</span>${p.n}</div>`).join("")}</div>`;
+  else if(mode==="ufog")s.innerHTML=ufoGStage();
   else if(mode==="lq"){s.innerHTML=`<div class="wheels"><div class="wb">👤 Người chơi<div class="wrap"><i class="ptr"></i><canvas id="w1" width="300" height="300"></canvas></div></div><div class="wb">🗺️ Đường đi<div class="wrap"><i class="ptr"></i><canvas id="w2" width="300" height="300"></canvas></div></div></div><div class="ring" id="lqres" style="margin-top:14px"></div>`;initLq()}
   else{s.innerHTML=`<div class="arena" id="arena" ${arenaBg()}><div class="hole"></div>${players.map((p,i)=>`<div class="orb" id="o${i}"><span class="f">${face(i)}</span>${p.n}</div>`).join("")}</div>`;initHole()}
 }
 
 async function play(){
   if(mode==="lq")return lqPlay();
+  if(mode==="ufog")return gPlay();
   if(busy||players.length<2)return;
   busy=true;$("#go").disabled=true;renderStage();
   const w=await({ufo,hole,race,bomb,slot,ball}[mode])();
   await sleep(400);
   const p=players[w];
   $("#em").innerHTML=p.img?`<img src="${p.img}" alt="">`:MODES.find(m=>m[0]===mode)[1];
-  $("#who").textContent=p.n;
+  $("#ovt").textContent="Người dính là…";$("#who").textContent=p.n;
   $("#pun").style.display=punish?"block":"none";
   $("#pun").textContent="Hình phạt: "+PUN[rnd(PUN.length)];
   $("#ov").classList.add("show");
+  confetti();fanfare();
+}
+function confetti(){
   for(let i=0;i<45;i++){const c=document.createElement("span");c.className="cf";c.textContent=["🎉","✨","🎊","💥","⭐"][rnd(5)];c.style.left=Math.random()*100+"vw";c.style.animationDelay=Math.random()*1.2+"s";$("#ov").appendChild(c)}
-  fanfare();
 }
 $("#go").onclick=play;
 $("#again").onclick=()=>{$("#ov").classList.remove("show");document.querySelectorAll(".cf").forEach(e=>e.remove());busy=false;renderChips()};
@@ -210,6 +243,122 @@ async function ufo(){
   await sleep(2400);B.style.opacity=0;U.style.top="-120px";U.style.left="115%";
   await sleep(1300);
   return w;
+}
+/* --- Đĩa bay chọn nhóm: chọn 1 trong G nhóm (có thể khóa nhóm), rồi chọn 1 trong P vị trí --- */
+let G=18,P=4,SPD=1.4,NR=true,ex=new Set(),hist=[];
+const doneG=()=>new Set(NR?hist.map(h=>h[0]):[]);
+const syncEx=()=>{const e=$("#exin");if(e)e.value=[...ex].sort((a,b)=>a-b).map(i=>i+1).join(", ")};
+function ufoGStage(){
+  const dn=doneG();
+  const cells=Array.from({length:G},(_,i)=>{
+    const c=ex.has(i)?"ex":dn.has(i)?"dn":"",m=ex.has(i)?"🔒 ":dn.has(i)?"✅ ":"";
+    return `<div class="gc ${c}" id="gc${i}"><small>${m}Nhóm</small><b>${i+1}</b></div>`}).join("");
+  const h=hist.length?`<div class="ring" style="margin-top:12px"><span style="color:var(--mute);align-self:center">Đã bốc:</span>${hist.map(x=>`<span class="p" style="font-size:14px;background:${col(x[0])};color:#2a1f4d">Nhóm ${x[0]+1} · V${x[1]+1}</span>`).join("")}<button id="ghclr" style="padding:2px 10px;font-size:13px;box-shadow:none">↺ Xóa lịch sử</button></div>`:"";
+  return `<div class="arena auto" ${arenaBg()}><div class="ufo sm" id="gufo" style="left:calc(50% - 40px);top:8px"><div class="beam" id="gbeam"></div><span class="ui">${ic("ufo","🛸")}</span></div>`
+  +`<div class="gg">${cells}</div>`
+  +`<div class="gt" id="gt">Bấm vào nhóm để khóa 🔒 (không bị chọn) · chọn xong nhóm sẽ quay 1 trong ${P} vị trí</div>`
+  +`<div class="seats off">${Array.from({length:P},(_,i)=>`<div class="gs" id="gs${i}"><span>🧑</span>Vị trí ${i+1}</div>`).join("")}</div></div>`+h;
+}
+$("#stage").addEventListener("click",e=>{
+  if(mode!=="ufog"||busy)return;
+  if(e.target.closest("#ghclr")){hist=[];renderStage();return}
+  const c=e.target.closest(".gc");if(!c)return;
+  const i=+c.id.slice(2);
+  if(doneG().has(i)&&!ex.has(i))hist=hist.filter(x=>x[0]!==i);   /* bấm vào nhóm ✅ = cho bốc lại */
+  else ex.has(i)?ex.delete(i):ex.add(i);                           /* bấm vào nhóm thường = khóa / mở khóa */
+  syncEx();renderStage();
+});
+/* random không thiên lệch (crypto + rejection sampling) */
+const rint=n=>{try{const a=new Uint32Array(1),lim=Math.floor(4294967296/n)*n;do{crypto.getRandomValues(a)}while(a[0]>=lim);return a[0]%n}catch(e){return rnd(n)}};
+const zz=ms=>sleep(ms*SPD);
+/* Các giai đoạn:
+   1) quét nhanh   2) loại dần ngẫu nhiên, dừng ở một điểm NGẪU NHIÊN (còn 3-5 ô, không chờ đến ô cuối)
+   3) kết thúc: tuần tra chậm + tim đập, 0-2 lần "nhử" (nhấp nháy rồi tắt), lần thật nhấp nháy nhanh dần rồi hút luôn */
+async function gHunt(pre,n,label,avail){
+  const U=$("#gufo"),st=$("#stage"),gt=$("#gt"),B=$("#gbeam"),el=i=>$("#"+pre+i),ar=st.querySelector(".arena");
+  let pool=avail.slice(),last=-1;
+  ar.classList.remove("tense");
+  const hover=async(i,d,f)=>{
+    st.querySelectorAll(".hot").forEach(e=>e.classList.remove("hot"));
+    const c=el(i),t=Math.min(d*.75,650)*SPD;
+    U.style.transition=`left ${t}ms ease-in-out,top ${t}ms ease-in-out`;
+    U.style.left=c.offsetLeft+c.offsetWidth/2-40+"px";U.style.top=c.offsetTop-44+"px";
+    c.classList.add("hot");last=i;beep(f,.1,"sine");await zz(d);
+  };
+  const other=()=>{const a=pool.filter(x=>x!==last);return a.length?a[rint(a.length)]:pool[0]};
+  const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rint(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+  const hb=async f=>{beep(f,.12,"sine");await zz(140);beep(f*.9,.15,"sine")};
+  const charge=async(c,blinks)=>{           /* nhấp nháy nhanh dần */
+    U.classList.add("chg");let iv=380;
+    for(let k=0;k<blinks;k++){
+      const on=k%2===0;B.style.opacity=on?.75:0;c.classList.toggle("blink",on);
+      beep(180+k*45,.09,"sawtooth");await zz(iv);iv=Math.max(70,iv*.82);
+    }
+    B.style.opacity=0;c.classList.remove("blink");U.classList.remove("chg");
+  };
+  /* 1) quét nhanh */
+  const big=pool.length>6;
+  if(pool.length>1)for(let k=0,sc=big?9+rint(4):3+rint(2);k<sc;k++)await hover(other(),(big?120:220)+k*(big?26:70),300+k*30);
+  /* 2) loại dần đến điểm dừng ngẫu nhiên */
+  const stopAt=Math.min(pool.length,big?3+rint(3):2+rint(2));
+  while(pool.length>stopAt){
+    const rm=Math.min(pool.length-stopAt,Math.max(1,Math.round(pool.length*.4)));
+    const p=1-pool.length/avail.length,d=240+360*p;
+    gt.textContent=label(pool.length);
+    for(let k=0,h=2+rint(2);k<h;k++)await hover(other(),d,380+p*300);
+    await zz(150);
+    for(let k=0;k<rm;k++){
+      const x=pool.splice(rint(pool.length),1)[0];
+      el(x).classList.remove("hot");el(x).classList.add("out");
+      beep(420-k*40,.18,"triangle");await zz(230);
+    }
+  }
+  /* 3) kết thúc */
+  ar.classList.add("tense");
+  gt.textContent=label(pool.length)+" 😱";
+  const win=pool[rint(pool.length)];                       /* người thắng: đều xác suất trong số còn lại */
+  const fk=shuf(pool.filter(x=>x!==win)).slice(0,rint(3));  /* 0-2 ô để "nhử" */
+  if(pool.length>1){let d=600;for(let k=0,r=2+rint(2);k<r;k++){await hover(other(),d,260+k*20);await hb(80+k*10);d*=1.25}}
+  for(const t of fk){
+    await hover(t,900,300);
+    gt.textContent="Nhấp nháy… 🫣";
+    await charge(el(t),5+rint(3));
+    gt.textContent="Chưa phải đâu… 😮‍💨";
+    beep(240,.25,"square");setTimeout(()=>beep(150,.4,"square"),250);
+    await zz(700);
+  }
+  await hover(win,1000,320);
+  gt.textContent="Nhấp nháy… nhấp nháy… 🫣";
+  await charge(el(win),14);
+  return win;
+}
+async function abduct(id){
+  const el=$("#"+id),B=$("#gbeam");
+  $("#stage").querySelectorAll(".hot").forEach(e=>e.classList.remove("hot"));
+  B.style.opacity=1;for(let k=0;k<6;k++)setTimeout(()=>beep(200+k*90,.25,"sine"),k*180);
+  await sleep(500);el.classList.add("abd");await sleep(1100);B.style.opacity=0;
+}
+async function gPlay(){
+  if(busy)return;
+  const dn=doneG(),avail=[...Array(G).keys()].filter(i=>!ex.has(i)&&!dn.has(i));
+  if(!avail.length){const t=$("#gt");if(t)t.textContent="Hết nhóm để bốc rồi! Hãy mở khóa nhóm hoặc bấm ↺ Xóa lịch sử.";return}
+  busy=true;$("#go").disabled=true;renderStage();
+  const U=$("#gufo");
+  await sleep(500);
+  const g=await gHunt("gc",G,c=>`Còn ${c} nhóm…`,avail);
+  await abduct("gc"+g);
+  $("#gt").innerHTML=`🎯 Đã bắt <b>Nhóm ${g+1}</b>! Giờ chọn 1 trong ${P} người…`;
+  $(".seats").classList.remove("off");
+  await sleep(700);
+  const s=await gHunt("gs",P,c=>`Nhóm ${g+1} · còn ${c} vị trí…`,[...Array(P).keys()]);
+  await abduct("gs"+s);
+  hist.push([g,s]);
+  U.style.transition="left 1s ease-in,top 1s ease-in";U.style.top="-120px";U.style.left="115%";
+  await sleep(1000);
+  $("#em").textContent="🛸";$("#ovt").textContent="Trúng rồi!";
+  $("#who").innerHTML=`Nhóm ${g+1}<br><span style="font-size:.62em;color:var(--ink)">Vị trí ${s+1}</span>`;
+  $("#pun").style.display="none";
+  $("#ov").classList.add("show");confetti();fanfare();
 }
 /* --- Hố đen --- */
 function initHole(){
