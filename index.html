@@ -24,7 +24,7 @@ input[type=text]{flex:1;min-width:0;font:inherit;padding:8px 12px;border:3px sol
 button{font:inherit;font-weight:800;border:3px solid var(--line);border-radius:12px;padding:8px 16px;background:var(--c);color:#12302a;cursor:pointer;box-shadow:3px 3px 0 var(--shadow)}
 button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--shadow)}
 button:disabled{opacity:.5;cursor:not-allowed}
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
 @media (max-width:480px){.tabs{grid-template-columns:repeat(3,1fr)}}
 .tab{background:var(--panel);color:var(--ink);padding:8px 4px;font-size:15px;line-height:1.15}
 .tab span{display:block;font-size:28px}
@@ -108,14 +108,71 @@ input[type=number]{font:inherit;width:64px;padding:2px 6px;border:2px solid var(
 .shake{animation:shk .4s}
 @keyframes shk{25%{translate:-8px 4px}50%{translate:8px -4px}75%{translate:-6px -3px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+/* ===== toàn màn hình ===== */
+#fsb{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);right:10px;z-index:15;padding:4px 12px;font-size:14px;background:var(--panel);color:var(--ink)}
+@media (max-width:480px){#fsb .lb{display:none}#fsb{padding:4px 10px;font-size:18px}}
+body.grp .sub,body.grp #pbox{display:none}
+body.fs h1,body.fs .sub{display:none}
+body.fs main{max-width:min(1200px,96vw);padding-top:52px}
+body.fs #go{font-size:32px;padding:16px}
+/* ===== radar quân sự ===== */
+.arena.mil{background:radial-gradient(circle at 50% 35%,#0d3b1c,#04140a 75%);border-color:#2a8f4f;padding:12px 10px 14px}
+.arena.mil.tense{box-shadow:inset 0 0 70px 14px rgba(255,60,60,.5)}
+.mhud{font:700 13px/1.2 ui-monospace,Consolas,monospace;color:#6dff9c;letter-spacing:.06em;text-align:center;margin-bottom:10px;animation:blk 1.6s steps(2) infinite}
+@keyframes blk{50%{opacity:.55}}
+.radar{position:relative;width:min(100%,440px);aspect-ratio:1;margin:0 auto;border-radius:50%;border:3px solid #3dff7a;
+ background:linear-gradient(90deg,transparent calc(50% - .5px),rgba(80,255,130,.28) calc(50% - .5px) calc(50% + .5px),transparent calc(50% + .5px)),
+ linear-gradient(0deg,transparent calc(50% - .5px),rgba(80,255,130,.28) calc(50% - .5px) calc(50% + .5px),transparent calc(50% + .5px)),
+ repeating-radial-gradient(circle closest-side,transparent 0 calc(33.33% - 1px),rgba(80,255,130,.3) calc(33.33% - 1px) 33.33%),#03150a;
+ box-shadow:0 0 30px rgba(60,255,120,.35),inset 0 0 40px rgba(0,0,0,.6)}
+body.fs .radar{width:min(100%,max(420px,calc(100vh - 470px)),780px)}
+.sweep{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(80,255,130,0) 0 270deg,rgba(80,255,130,.5) 358deg,rgba(170,255,200,.95) 360deg);animation:spin 3s linear infinite;pointer-events:none}
+.bl{position:absolute;width:11%;aspect-ratio:1;margin:-5.5% 0 0 -5.5%;border-radius:50%;border:2px solid #5dff8f;background:rgba(60,255,110,.2);color:#d6ffe2;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;line-height:1;cursor:pointer;transition:transform .25s,opacity .6s,background .1s;box-shadow:0 0 8px rgba(60,255,110,.45)}
+.bl b{font-size:clamp(11px,3.2vw,17px)}.bl i{font-style:normal;font-size:9px}.bl i:empty{display:none}
+.bl.ex{opacity:.4;border-style:dashed;box-shadow:none}.bl.dn{opacity:.5;border-color:#2fbf9b}
+.bl.hit,.sd.hit{opacity:.4;border-color:#ff5a5a;background:rgba(255,60,60,.25);box-shadow:none}
+.bl.hot,.sd.hot{background:rgba(255,210,60,.9);color:#2a1f00;transform:scale(1.25);z-index:3}
+.bl.out,.sd.out{opacity:.15;transform:scale(.7)}
+.bl.blink,.sd.blink{background:#ff3b3b;color:#fff;transform:scale(1.4);z-index:3}
+.mgt{color:#b7ffcf;font-family:ui-monospace,Consolas,monospace;text-align:center;font-weight:700;margin:12px 0 8px;min-height:2.6em}
+.squad{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;transition:opacity .4s}.squad.off{opacity:.35}
+.sd{flex:1 1 70px;max-width:130px;text-align:center;border:2px solid rgba(110,255,160,.6);border-radius:10px;background:rgba(80,255,130,.1);color:#d8ffe4;font-weight:800;font-size:13px;padding:8px 2px;transition:transform .25s,opacity .6s,background .1s}
+.sd span{display:block;font-size:26px;line-height:30px}
+.ret{position:absolute;left:0;top:0;width:60px;height:60px;border:2px solid #ff4f4f;border-radius:50%;pointer-events:none;opacity:0;z-index:6;box-shadow:0 0 14px #f44}
+.ret::before,.ret::after{content:"";position:absolute;background:#ff4f4f}
+.ret::before{left:50%;top:-10px;bottom:-10px;width:2px;margin-left:-1px}
+.ret::after{top:50%;left:-10px;right:-10px;height:2px;margin-top:-1px}
+.ret.red{background:rgba(255,60,60,.25);box-shadow:0 0 24px 6px #f44}
+.ret.chg{animation:shk .25s infinite}
+.msl{position:absolute;font-size:34px;line-height:1;z-index:7;pointer-events:none}
+.boom{position:absolute;font-size:30px;z-index:8;pointer-events:none;animation:boom .9s ease-out forwards}
+@keyframes boom{0%{transform:translate(-50%,-50%) scale(.3);opacity:1}100%{transform:translate(-50%,-50%) scale(3.4);opacity:0}}
+.mfl{position:absolute;inset:0;background:#fff;z-index:9;pointer-events:none;animation:mfl .45s ease-out forwards}
+@keyframes mfl{from{opacity:.75}to{opacity:0}}
+/* ===== logo trường ===== */
+.brand{display:flex;align-items:center;gap:12px;margin:0 0 4px;padding-right:90px}
+.brand svg,.brand img{height:60px;width:auto;aspect-ratio:1806/912;flex:none;object-fit:contain}
+.brand b{display:block;font-size:17px;letter-spacing:.04em;line-height:1.15}
+.brand small{display:block;color:var(--mute);font:600 12px/1.3 ui-monospace,Consolas,monospace}
+body.fs .brand svg,body.fs .brand img{height:88px}
+body.fs .brand b{font-size:22px}
+#ovlogo svg,#ovlogo img{height:42px;width:auto;aspect-ratio:1806/912;display:block;margin:0 auto 4px;object-fit:contain}
+.rlogo{position:absolute;left:50%;top:50%;width:50%;aspect-ratio:1806/912;transform:translate(-50%,-50%);opacity:.11;pointer-events:none}
+.rlogo svg,.rlogo img{width:100%;height:auto;display:block}
+.msz{display:flex;align-items:center;justify-content:center;gap:10px;color:#b7ffcf;font:700 14px ui-monospace,Consolas,monospace;margin:0 0 10px}
+.msz b{font-size:22px;min-width:1.6em;text-align:center;color:#fff}
+.szb{width:34px;height:34px;padding:0;border-radius:50%;font-size:20px;line-height:1;background:rgba(80,255,130,.15);color:#b7ffcf;border:2px solid #3dff7a;box-shadow:none}
+.seats{flex-wrap:wrap}.gs{flex:1 1 60px}
 </style>
 </head>
 <body>
+<button id="fsb" title="Toàn màn hình">⛶<span class="lb"> Toàn màn hình</span></button>
 <main>
+<div class="brand"><span id="brandLogo"></span><div><b id="brandName"></b><small id="brandSub"></small></div></div>
 <h1>Ai là người xui? 🎲</h1>
 <p class="sub">Thêm cả nhóm, bấm vào 📷 để gắn ảnh mặt từng người, rồi chọn một trò để chọn người bị dính.</p>
 
-<div class="box">
+<div class="box" id="pbox">
   <div class="row"><input id="name" type="text" maxlength="14" placeholder="Nhập tên rồi bấm Enter"><button id="add">Thêm</button></div>
   <div class="chips" id="chips"></div>
   <input type="file" id="file" accept="image/*" hidden>
@@ -130,16 +187,18 @@ input[type=number]{font:inherit;width:64px;padding:2px 6px;border:2px solid var(
 </div>
 </main>
 
-<div id="ov"><div class="card"><div id="em">🎯</div><p id="ovt">Người dính là…</p><h2 id="who"></h2><p class="pun" id="pun"></p><button id="again">Chơi lại</button></div></div>
+<div id="ov"><div class="card"><div id="ovlogo"></div><div id="em">🎯</div><p id="ovt">Người dính là…</p><h2 id="who"></h2><p class="pun" id="pun"></p><button id="again">Chơi lại</button></div></div>
 
 <script>
 /* ===== TÙY CHỈNH ẢNH: dán đường dẫn ảnh (hoặc tên file cùng thư mục) vào giữa dấu "" =====
    ufo: ảnh đĩa bay | bomb: ảnh quả bom | bg: ảnh nền bầu trời | ground: (để trống cũng được) */
-const ASSETS={ufo:"",bomb:"",bg:""};
+const ASSETS={ufo:"",bomb:"",bg:"",logo:""};
+/* ===== THÔNG TIN TRƯỜNG: sửa ở đây (logo vẽ bằng SVG tự động theo "short"). Có logo thật thì điền vào ASSETS.logo ở trên ===== */
+const SCHOOL={short:"ĐHSP TP.HCM",code:"SP",dept:"CNTT",name:"TRƯỜNG ĐẠI HỌC SƯ PHẠM TP. HỒ CHÍ MINH",sub:"// Khoa Công nghệ thông tin"};   /* code & dept (chữ/số không dấu) dùng cho dãy nhị phân và chip trong logo */
 /* ===================================================================================== */
 const $=s=>document.querySelector(s);
 let players=[{n:"Thiết"},{n:"Thanh"},{n:"Hoàng"},{n:"Thịnh"},{n:"Đức"}],mode="ufo",busy=false,raceRule="first",punish=true,upIdx=-1;
-const MODES=[["ufo","🛸","Đĩa bay"],["ufog","🛸","Đĩa bay nhóm"],["hole","🕳️","Hố đen"],["race","🏇","Đua thú"],["bomb","💣","Chuyền bom"],["slot","🎰","Máy quay"],["ball","🎱","Loại trừ"],["lq","🎡","Vòng quay LQ"]];
+const MODES=[["ufo","🛸","Đĩa bay"],["ufog","🛸","Đĩa bay nhóm"],["mil","🎖️","Radar quân sự"],["hole","🕳️","Hố đen"],["race","🏇","Đua thú"],["bomb","💣","Chuyền bom"],["slot","🎰","Máy quay"],["ball","🎱","Loại trừ"],["lq","🎡","Vòng quay LQ"]];
 const EMO=["🐎","🐢","🐇","🦆","🐕","🐈","🦊","🐸","🐧","🦄","🐙","🦖"];
 const PUN=["Hát một bài trước cả nhóm","Mời cả nhóm ly nước","Kể một bí mật nhỏ","Nhảy 10 giây không nhạc","Nói giọng nũng nịu suốt 5 phút","Chụp một tấm ảnh xấu nhất đăng story","Làm 15 cái hít đất","Đọc to tin nhắn cuối cùng trong điện thoại","Bắt chước một người trong nhóm cho cả bàn đoán","Làm bồi bàn phục vụ cả nhóm 10 phút"];
 const col=i=>`hsl(${(i*47+10)%360} 85% 68%)`;
@@ -153,7 +212,7 @@ const fanfare=()=>[523,659,784,1047,1319].forEach((f,i)=>setTimeout(()=>beep(f,.
 
 function renderChips(){
   $("#chips").innerHTML=players.map((p,i)=>`<span class="chip" style="background:${col(i)}"><span class="ph" data-up="${i}" title="Gắn ảnh">${p.img?`<img src="${p.img}" alt="">`:"📷"}</span>${p.n}<span class="x" data-del="${i}">✕</span></span>`).join("")||'<span style="color:var(--mute)">Chưa có ai. Thêm ít nhất 2 người nhé.</span>';
-  $("#go").disabled=busy||(mode!=="ufog"&&players.length<2);
+  $("#go").disabled=busy||(!grp()&&players.length<2);
   renderStage();
 }
 function addName(){
@@ -177,8 +236,9 @@ $("#file").onchange=e=>{
 };
 
 function renderTabs(){
+  document.body.classList.toggle("grp",grp());
   $("#tabs").innerHTML=MODES.map(m=>`<button class="tab ${m[0]===mode?"on":""}" data-m="${m[0]}"><span>${m[1]}</span>${m[2]}</button>`).join("");
-  $("#opts").innerHTML=(mode==="race"?`Người dính: <select id="rule"><option value="first" ${raceRule==="first"?"selected":""}>về nhất</option><option value="last" ${raceRule==="last"?"selected":""}>về chót</option></select>`:"")+(mode==="lq"?`<label style="width:100%">Các đường (cách nhau bằng dấu phẩy):<input type="text" id="lanes" value="${lanes.join(", ")}" style="width:100%;margin-top:4px"></label>`:"")+(mode==="ufog"?`<label>Số nhóm: <input type="number" id="gn" min="2" max="30" value="${G}"></label><label>Người/nhóm: <input type="number" id="gp" min="2" max="8" value="${P}"></label><label>Tốc độ: <select id="spd">${[["Vừa",1],["Chậm",1.4],["Siêu hồi hộp",2]].map(o=>`<option value="${o[1]}" ${o[1]===SPD?"selected":""}>${o[0]}</option>`).join("")}</select></label><label><input type="checkbox" id="nr" ${NR?"checked":""}> Không bốc lại nhóm đã trúng</label><label style="width:100%">Khóa nhóm (không bị chọn), ví dụ nhóm trình bày: <input type="text" id="exin" value="${[...ex].sort((a,b)=>a-b).map(i=>i+1).join(", ")}" placeholder="vd: 16, 3" style="width:100%;margin-top:4px"></label>`:`<label><input type="checkbox" id="pn" ${punish?"checked":""}> Kèm hình phạt</label>`)+`<label><input type="checkbox" id="snd" checked> Âm thanh</label>`;
+  $("#opts").innerHTML=(mode==="race"?`Người dính: <select id="rule"><option value="first" ${raceRule==="first"?"selected":""}>về nhất</option><option value="last" ${raceRule==="last"?"selected":""}>về chót</option></select>`:"")+(mode==="lq"?`<label style="width:100%">Các đường (cách nhau bằng dấu phẩy):<input type="text" id="lanes" value="${lanes.join(", ")}" style="width:100%;margin-top:4px"></label>`:"")+(grp()?`<label>Số nhóm: <input type="number" id="gn" min="2" max="30" value="${G}"></label><label>Người/nhóm: <input type="number" id="gp" min="2" max="8" value="${P}"></label><label>Tốc độ: <select id="spd">${[["Vừa",1],["Chậm",1.4],["Siêu hồi hộp",2]].map(o=>`<option value="${o[1]}" ${o[1]===SPD?"selected":""}>${o[0]}</option>`).join("")}</select></label><label><input type="checkbox" id="nr" ${NR?"checked":""}> Không bốc lại nhóm đã trúng</label><label style="width:100%">Khóa nhóm (không bị chọn), ví dụ nhóm trình bày: <input type="text" id="exin" value="${[...ex].sort((a,b)=>a-b).map(i=>i+1).join(", ")}" placeholder="vd: 16, 3" style="width:100%;margin-top:4px"></label>`:`<label><input type="checkbox" id="pn" ${punish?"checked":""}> Kèm hình phạt</label>`)+`<label><input type="checkbox" id="snd" checked> Âm thanh</label>`;
   const r=$("#rule");if(r)r.onchange=()=>raceRule=r.value;
   const ln=$("#lanes");if(ln)ln.onchange=()=>{if(!busy){lanes=ln.value.split(",").map(x=>x.trim()).filter(Boolean);renderStage()}};
   const pn=$("#pn");if(pn)pn.onchange=e=>punish=e.target.checked;
@@ -186,21 +246,22 @@ function renderTabs(){
   const ei=$("#exin");if(ei)ei.onchange=()=>{if(busy)return;ex=new Set(ei.value.split(/[,;\s]+/).map(Number).filter(n=>Number.isInteger(n)&&n>=1&&n<=G).map(n=>n-1));syncEx();renderStage()};
   const nr=$("#nr");if(nr)nr.onchange=()=>{NR=nr.checked;if(!busy)renderStage()};
   const gn=$("#gn"),gp=$("#gp");
-  if(gn)gn.onchange=()=>{if(busy)return;G=Math.max(2,Math.min(30,+gn.value||18));gn.value=G;ex=new Set([...ex].filter(i=>i<G));hist=[];syncEx();renderStage()};
-  if(gp)gp.onchange=()=>{if(busy)return;P=Math.max(2,Math.min(8,+gp.value||4));gp.value=P;renderStage()};
+  if(gn)gn.onchange=()=>{if(busy)return;G=Math.max(2,Math.min(30,+gn.value||18));gn.value=G;ex=new Set([...ex].filter(i=>i<G));hist=[];milG=null;gsz.clear();syncEx();renderStage()};
+  if(gp)gp.onchange=()=>{if(busy)return;P=Math.max(2,Math.min(8,+gp.value||4));gp.value=P;milG=null;gsz.clear();renderStage()};
 }
 $("#tabs").onclick=e=>{const b=e.target.closest(".tab");if(b&&!busy){mode=b.dataset.m;renderTabs();renderStage()}};
 
 const arenaBg=()=>ASSETS.bg?`style="background-image:url('${ASSETS.bg}')"`:"";
 let items=[];
 function renderStage(){
-  const s=$("#stage"),n=players.length;$("#go").textContent=mode==="lq"?"🎡 Quay!":"Bắt đầu!";
+  const s=$("#stage"),n=players.length;$("#go").textContent=mode==="lq"?"🎡 Quay!":mode==="mil"?(milG===null?"📡 Quét mục tiêu":"🪖 Chọn thành viên"):"Bắt đầu!";
   if(mode==="race")s.innerHTML=players.map((p,i)=>`<div class="lane"><div class="run" id="r${i}" style="left:0"><span class="f">${face(i)}</span>${p.n}</div></div>`).join("");
   else if(mode==="bomb")s.innerHTML=`<div class="big" id="bn">${ic("bomb","💣")} ???</div><div class="ring">${players.map((p,i)=>`<span class="p" id="p${i}">${p.img?face(i):""}${p.n}</span>`).join("")}</div>`;
   else if(mode==="slot")s.innerHTML=`<div class="big" id="reel">🎰 ???</div><p style="text-align:center;color:var(--mute);margin:0">Tên chạy loạn rồi dừng lại ở một người</p>`;
   else if(mode==="ball")s.innerHTML=`<div class="drum" id="drum">${players.map((p,i)=>`<div class="ball" id="b${i}" style="background:${col(i)}">${p.img?face(i,80):p.n}</div>`).join("")}</div><p style="text-align:center;color:var(--mute)">Mỗi lượt loại một người. Người cuối cùng ở lại là người dính.</p>`;
   else if(mode==="ufo")s.innerHTML=`<div class="arena" ${arenaBg()}><div class="ground"></div><div class="ufo" id="ufo"><div class="beam" id="beam"></div><span class="ui">${ic("ufo","🛸")}</span></div>${players.map((p,i)=>`<div class="av" id="a${i}" style="left:${(i+.5)/n*100}%"><span class="f" style="animation-delay:${i*.13}s">${face(i)}</span>${p.n}</div>`).join("")}</div>`;
   else if(mode==="ufog")s.innerHTML=ufoGStage();
+  else if(mode==="mil")s.innerHTML=milStage();
   else if(mode==="lq"){s.innerHTML=`<div class="wheels"><div class="wb">👤 Người chơi<div class="wrap"><i class="ptr"></i><canvas id="w1" width="300" height="300"></canvas></div></div><div class="wb">🗺️ Đường đi<div class="wrap"><i class="ptr"></i><canvas id="w2" width="300" height="300"></canvas></div></div></div><div class="ring" id="lqres" style="margin-top:14px"></div>`;initLq()}
   else{s.innerHTML=`<div class="arena" id="arena" ${arenaBg()}><div class="hole"></div>${players.map((p,i)=>`<div class="orb" id="o${i}"><span class="f">${face(i)}</span>${p.n}</div>`).join("")}</div>`;initHole()}
 }
@@ -208,6 +269,7 @@ function renderStage(){
 async function play(){
   if(mode==="lq")return lqPlay();
   if(mode==="ufog")return gPlay();
+  if(mode==="mil")return milPlay();
   if(busy||players.length<2)return;
   busy=true;$("#go").disabled=true;renderStage();
   const w=await({ufo,hole,race,bomb,slot,ball}[mode])();
@@ -246,6 +308,8 @@ async function ufo(){
 }
 /* --- Đĩa bay chọn nhóm: chọn 1 trong G nhóm (có thể khóa nhóm), rồi chọn 1 trong P vị trí --- */
 let G=18,P=4,SPD=1.4,NR=true,ex=new Set(),hist=[];
+function grp(){return mode==="ufog"||mode==="mil"}
+const histHtml=()=>hist.length?`<div class="ring" style="margin-top:12px"><span style="color:var(--mute);align-self:center">Đã bốc:</span>${hist.map(x=>`<span class="p" style="font-size:14px;background:${col(x[0])};color:#2a1f4d">Nhóm ${x[0]+1} · V${x[1]+1}</span>`).join("")}<button id="ghclr" style="padding:2px 10px;font-size:13px;box-shadow:none">↺ Xóa lịch sử</button></div>`:"";
 const doneG=()=>new Set(NR?hist.map(h=>h[0]):[]);
 const syncEx=()=>{const e=$("#exin");if(e)e.value=[...ex].sort((a,b)=>a-b).map(i=>i+1).join(", ")};
 function ufoGStage(){
@@ -253,16 +317,21 @@ function ufoGStage(){
   const cells=Array.from({length:G},(_,i)=>{
     const c=ex.has(i)?"ex":dn.has(i)?"dn":"",m=ex.has(i)?"🔒 ":dn.has(i)?"✅ ":"";
     return `<div class="gc ${c}" id="gc${i}"><small>${m}Nhóm</small><b>${i+1}</b></div>`}).join("");
-  const h=hist.length?`<div class="ring" style="margin-top:12px"><span style="color:var(--mute);align-self:center">Đã bốc:</span>${hist.map(x=>`<span class="p" style="font-size:14px;background:${col(x[0])};color:#2a1f4d">Nhóm ${x[0]+1} · V${x[1]+1}</span>`).join("")}<button id="ghclr" style="padding:2px 10px;font-size:13px;box-shadow:none">↺ Xóa lịch sử</button></div>`:"";
+  const h=histHtml();
   return `<div class="arena auto" ${arenaBg()}><div class="ufo sm" id="gufo" style="left:calc(50% - 40px);top:8px"><div class="beam" id="gbeam"></div><span class="ui">${ic("ufo","🛸")}</span></div>`
   +`<div class="gg">${cells}</div>`
   +`<div class="gt" id="gt">Bấm vào nhóm để khóa 🔒 (không bị chọn) · chọn xong nhóm sẽ quay 1 trong ${P} vị trí</div>`
   +`<div class="seats off">${Array.from({length:P},(_,i)=>`<div class="gs" id="gs${i}"><span>🧑</span>Vị trí ${i+1}</div>`).join("")}</div></div>`+h;
 }
 $("#stage").addEventListener("click",e=>{
-  if(mode!=="ufog"||busy)return;
+  if(!grp()||busy)return;
   if(e.target.closest("#ghclr")){hist=[];renderStage();return}
-  const c=e.target.closest(".gc");if(!c)return;
+  const sz=e.target.closest(".szb");
+  if(sz&&milG!==null){                                   /* chỉnh số thành viên của nhóm vừa bị khóa */
+    const n=Math.max(2,Math.min(12,milSize(milG)+(+sz.dataset.d)));gsz.set(milG,n);
+    $("#szv").textContent=n;$("#squad").innerHTML=milSquad(n);$("#mgt").innerHTML=milMsg();return;
+  }
+  const c=e.target.closest(".gc,.bl");if(!c)return;
   const i=+c.id.slice(2);
   if(doneG().has(i)&&!ex.has(i))hist=hist.filter(x=>x[0]!==i);   /* bấm vào nhóm ✅ = cho bốc lại */
   else ex.has(i)?ex.delete(i):ex.add(i);                           /* bấm vào nhóm thường = khóa / mở khóa */
@@ -274,28 +343,15 @@ const zz=ms=>sleep(ms*SPD);
 /* Các giai đoạn:
    1) quét nhanh   2) loại dần ngẫu nhiên, dừng ở một điểm NGẪU NHIÊN (còn 3-5 ô, không chờ đến ô cuối)
    3) kết thúc: tuần tra chậm + tim đập, 0-2 lần "nhử" (nhấp nháy rồi tắt), lần thật nhấp nháy nhanh dần rồi hút luôn */
-async function gHunt(pre,n,label,avail){
-  const U=$("#gufo"),st=$("#stage"),gt=$("#gt"),B=$("#gbeam"),el=i=>$("#"+pre+i),ar=st.querySelector(".arena");
+async function huntCore(avail,label,o){
   let pool=avail.slice(),last=-1;
-  ar.classList.remove("tense");
-  const hover=async(i,d,f)=>{
-    st.querySelectorAll(".hot").forEach(e=>e.classList.remove("hot"));
-    const c=el(i),t=Math.min(d*.75,650)*SPD;
-    U.style.transition=`left ${t}ms ease-in-out,top ${t}ms ease-in-out`;
-    U.style.left=c.offsetLeft+c.offsetWidth/2-40+"px";U.style.top=c.offsetTop-44+"px";
-    c.classList.add("hot");last=i;beep(f,.1,"sine");await zz(d);
-  };
+  const T=Object.assign({fake:"Chưa phải đâu… 😮‍💨",charge:"Nhấp nháy… 🫣"},o.t||{});
+  const nb=()=>8+rint(7);                                  /* số lần nhấp nháy: nhử và thật dùng CHUNG phân phối, không lộ */
+  o.tense(false);if(o.init)o.init();
+  const hover=async(i,d,f)=>{await o.hover(i,d,f);last=i};
   const other=()=>{const a=pool.filter(x=>x!==last);return a.length?a[rint(a.length)]:pool[0]};
   const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rint(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
   const hb=async f=>{beep(f,.12,"sine");await zz(140);beep(f*.9,.15,"sine")};
-  const charge=async(c,blinks)=>{           /* nhấp nháy nhanh dần */
-    U.classList.add("chg");let iv=380;
-    for(let k=0;k<blinks;k++){
-      const on=k%2===0;B.style.opacity=on?.75:0;c.classList.toggle("blink",on);
-      beep(180+k*45,.09,"sawtooth");await zz(iv);iv=Math.max(70,iv*.82);
-    }
-    B.style.opacity=0;c.classList.remove("blink");U.classList.remove("chg");
-  };
   /* 1) quét nhanh */
   const big=pool.length>6;
   if(pool.length>1)for(let k=0,sc=big?9+rint(4):3+rint(2);k<sc;k++)await hover(other(),(big?120:220)+k*(big?26:70),300+k*30);
@@ -304,33 +360,56 @@ async function gHunt(pre,n,label,avail){
   while(pool.length>stopAt){
     const rm=Math.min(pool.length-stopAt,Math.max(1,Math.round(pool.length*.4)));
     const p=1-pool.length/avail.length,d=240+360*p;
-    gt.textContent=label(pool.length);
+    o.note(label(pool.length));
     for(let k=0,h=2+rint(2);k<h;k++)await hover(other(),d,380+p*300);
     await zz(150);
     for(let k=0;k<rm;k++){
       const x=pool.splice(rint(pool.length),1)[0];
-      el(x).classList.remove("hot");el(x).classList.add("out");
-      beep(420-k*40,.18,"triangle");await zz(230);
+      o.out(x);beep(420-k*40,.18,"triangle");await zz(230);
     }
   }
   /* 3) kết thúc */
-  ar.classList.add("tense");
-  gt.textContent=label(pool.length)+" 😱";
+  o.tense(true);
+  o.note(label(pool.length)+" 😱");
   const win=pool[rint(pool.length)];                       /* người thắng: đều xác suất trong số còn lại */
   const fk=shuf(pool.filter(x=>x!==win)).slice(0,rint(3));  /* 0-2 ô để "nhử" */
   if(pool.length>1){let d=600;for(let k=0,r=2+rint(2);k<r;k++){await hover(other(),d,260+k*20);await hb(80+k*10);d*=1.25}}
   for(const t of fk){
-    await hover(t,900,300);
-    gt.textContent="Nhấp nháy… 🫣";
-    await charge(el(t),5+rint(3));
-    gt.textContent="Chưa phải đâu… 😮‍💨";
+    await hover(t,950,310);
+    o.note(T.charge);
+    await o.charge(t,nb());
+    o.note(T.fake);
     beep(240,.25,"square");setTimeout(()=>beep(150,.4,"square"),250);
     await zz(700);
   }
-  await hover(win,1000,320);
-  gt.textContent="Nhấp nháy… nhấp nháy… 🫣";
-  await charge(el(win),14);
+  await hover(win,950,310);                                /* y hệt lần nhử: cùng tốc độ, cùng âm, cùng thông báo */
+  o.note(T.charge);
+  await o.charge(win,nb());
   return win;
+}
+/* bản Đĩa bay */
+function gHunt(pre,n,label,avail){
+  const U=$("#gufo"),st=$("#stage"),gt=$("#gt"),B=$("#gbeam"),el=i=>$("#"+pre+i),ar=st.querySelector(".arena");
+  return huntCore(avail,label,{
+    tense:on=>ar.classList.toggle("tense",on),
+    note:t=>{gt.textContent=t},
+    hover:async(i,d,f)=>{
+      st.querySelectorAll(".hot").forEach(e=>e.classList.remove("hot"));
+      const c=el(i),t=Math.min(d*.75,650)*SPD;
+      U.style.transition=`left ${t}ms ease-in-out,top ${t}ms ease-in-out`;
+      U.style.left=c.offsetLeft+c.offsetWidth/2-40+"px";U.style.top=c.offsetTop-44+"px";
+      c.classList.add("hot");beep(f,.1,"sine");await zz(d);
+    },
+    out:i=>{el(i).classList.remove("hot");el(i).classList.add("out")},
+    charge:async(i,blinks)=>{           /* nhấp nháy nhanh dần */
+      const c=el(i);U.classList.add("chg");let iv=380;
+      for(let k=0;k<blinks;k++){
+        const on=k%2===0;B.style.opacity=on?.75:0;c.classList.toggle("blink",on);
+        beep(180+k*45,.09,"sawtooth");await zz(iv);iv=Math.max(70,iv*.82);
+      }
+      B.style.opacity=0;c.classList.remove("blink");U.classList.remove("chg");
+    }
+  });
 }
 async function abduct(id){
   const el=$("#"+id),B=$("#gbeam");
@@ -347,10 +426,12 @@ async function gPlay(){
   await sleep(500);
   const g=await gHunt("gc",G,c=>`Còn ${c} nhóm…`,avail);
   await abduct("gc"+g);
-  $("#gt").innerHTML=`🎯 Đã bắt <b>Nhóm ${g+1}</b>! Giờ chọn 1 trong ${P} người…`;
+  const n=milSize(g);
+  $(".seats").innerHTML=Array.from({length:n},(_,i)=>`<div class="gs" id="gs${i}"><span>🧑</span>Vị trí ${i+1}</div>`).join("");
+  $("#gt").innerHTML=`🎯 Đã bắt <b>Nhóm ${g+1}</b>! Giờ chọn 1 trong ${n} người…`;
   $(".seats").classList.remove("off");
   await sleep(700);
-  const s=await gHunt("gs",P,c=>`Nhóm ${g+1} · còn ${c} vị trí…`,[...Array(P).keys()]);
+  const s=await gHunt("gs",n,c=>`Nhóm ${g+1} · còn ${c} vị trí…`,[...Array(n).keys()]);
   await abduct("gs"+s);
   hist.push([g,s]);
   U.style.transition="left 1s ease-in,top 1s ease-in";U.style.top="-120px";U.style.left="115%";
@@ -359,6 +440,99 @@ async function gPlay(){
   $("#who").innerHTML=`Nhóm ${g+1}<br><span style="font-size:.62em;color:var(--ink)">Vị trí ${s+1}</span>`;
   $("#pun").style.display="none";
   $("#ov").classList.add("show");confetti();fanfare();
+}
+
+/* --- Radar quân sự: bước 1 chọn NHÓM (radar + tên lửa), bấm tiếp bước 2 mới chọn THÀNH VIÊN --- */
+let milG=null;const gsz=new Map();                       /* số thành viên riêng của từng nhóm (mặc định = P) */
+function milSize(g){return gsz.has(g)?gsz.get(g):P}
+const milSquad=n=>Array.from({length:n},(_,i)=>`<div class="sd" id="sd${i}"><span>🪖</span>Chiến sĩ ${i+1}</div>`).join("");
+const milMsg=()=>milG===null?`Bấm “Quét mục tiêu” để radar chọn nhóm · bấm vào một mục tiêu để khóa 🔒`
+  :`🎯 MỤC TIÊU ĐÃ BỊ KHÓA: <b>NHÓM ${milG+1}</b><br>Chỉnh số thành viên nếu cần, rồi bấm “Chọn thành viên” (đang chọn trong ${milSize(milG)} người)`;
+function milStage(){
+  const dn=doneG();
+  const bl=Array.from({length:G},(_,i)=>{
+    const a=i*2.399963,r=.18+.64*Math.sqrt((i+.5)/G),x=50+50*r*Math.cos(a),y=50+50*r*Math.sin(a);
+    const c=milG===i?"hit":ex.has(i)?"ex":dn.has(i)?"dn":"",m=milG===i?"✖":ex.has(i)?"🔒":dn.has(i)?"✅":"";
+    return `<div class="bl ${c}" id="bl${i}" style="left:${x.toFixed(1)}%;top:${y.toFixed(1)}%"><i>${m}</i><b>${i+1}</b></div>`}).join("");
+  const n=milG===null?P:milSize(milG);
+  const stp=milG===null?"":`<div class="msz">👥 Số thành viên nhóm ${milG+1}: <button class="szb" data-d="-1" aria-label="Giảm">−</button><b id="szv">${n}</b><button class="szb" data-d="1" aria-label="Tăng">+</button></div>`;
+  return `<div class="arena auto mil" id="marena"><div class="mhud">◉ TRẠM RADAR · ${SCHOOL.short} · TRỰC CHIẾN · ${G} MỤC TIÊU</div>`
+   +`<div class="radar" id="radar"><div class="rlogo">${logoSVG("lr")}</div><div class="sweep"></div>${bl}</div><div class="mgt" id="mgt">${milMsg()}</div>${stp}`
+   +`<div class="squad ${milG===null?"off":""}" id="squad">${milSquad(n)}</div><div class="ret" id="ret"></div></div>`+histHtml();
+}
+function milHunt(pre,label,avail,initId,t){
+  const ar=$("#marena"),ret=$("#ret"),mg=$("#mgt"),el=i=>$("#"+pre+i);
+  const pos=e=>{const a=ar.getBoundingClientRect(),r=e.getBoundingClientRect();return [r.left-a.left+r.width/2,r.top-a.top+r.height/2]};
+  const put=(e,ms)=>{const [x,y]=pos(e);ret.style.transition=ms?`left ${ms}ms ease-in-out,top ${ms}ms ease-in-out,opacity .3s`:"none";ret.style.left=x-30+"px";ret.style.top=y-30+"px"};
+  return huntCore(avail,label,{
+    t,
+    init:()=>{put($(initId),0);ret.style.opacity=1;void ret.offsetWidth},
+    tense:on=>ar.classList.toggle("tense",on),
+    note:x=>{mg.textContent=x},
+    hover:async(i,d,f)=>{
+      ar.querySelectorAll(".hot").forEach(e=>e.classList.remove("hot"));
+      put(el(i),Math.min(d*.75,650)*SPD);el(i).classList.add("hot");beep(f*2,.05,"square");await zz(d);
+    },
+    out:i=>{el(i).classList.remove("hot");el(i).classList.add("out")},
+    charge:async(i,blinks)=>{           /* ống ngắm đỏ nhấp nháy nhanh dần */
+      const c=el(i);ret.classList.add("chg");let iv=380;
+      for(let k=0;k<blinks;k++){
+        const on=k%2===0;c.classList.toggle("blink",on);ret.classList.toggle("red",on);
+        beep(180+k*45,.09,"sawtooth");await zz(iv);iv=Math.max(70,iv*.82);
+      }
+      c.classList.remove("blink");ret.classList.remove("red","chg");
+    }
+  });
+}
+async function mFire(id){               /* tên lửa bay từ đáy màn hình trúng mục tiêu */
+  const ar=$("#marena"),t=$("#"+id),ret=$("#ret");
+  const a=ar.getBoundingClientRect(),r=t.getBoundingClientRect();
+  const tx=r.left-a.left+r.width/2,ty=r.top-a.top+r.height/2,sx=ar.clientWidth/2,sy=ar.clientHeight-10;
+  const dx=tx-sx,dy=ty-sy,deg=Math.atan2(dx,-dy)*180/Math.PI-45;
+  const m=document.createElement("div");m.className="msl";m.textContent="🚀";
+  m.style.left=sx+"px";m.style.top=sy+"px";m.style.transform=`translate(-50%,-50%) rotate(${deg}deg)`;
+  ar.appendChild(m);void m.offsetWidth;
+  m.style.transition="transform 1s cubic-bezier(.5,0,.9,.6)";
+  m.style.transform=`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) rotate(${deg}deg)`;
+  for(let k=0;k<8;k++)setTimeout(()=>beep(200+k*110,.12,"sawtooth"),k*115);
+  await sleep(1000);m.remove();
+  const b=document.createElement("div");b.className="boom";b.textContent="💥";b.style.left=tx+"px";b.style.top=ty+"px";ar.appendChild(b);
+  const f=document.createElement("div");f.className="mfl";ar.appendChild(f);
+  ar.classList.add("shake");ret.style.opacity=0;
+  t.classList.remove("hot","blink");t.classList.add("hit");
+  for(let k=0;k<6;k++)setTimeout(()=>beep(150-k*18,.22,"sawtooth"),k*70);
+  await sleep(1000);b.remove();f.remove();ar.classList.remove("shake");
+}
+async function milPlay(){
+  if(busy)return;
+  if(milG===null){                                   /* BƯỚC 1: chọn nhóm */
+    const dn=doneG(),avail=[...Array(G).keys()].filter(i=>!ex.has(i)&&!dn.has(i));
+    if(!avail.length){const t=$("#mgt");if(t)t.textContent="Hết mục tiêu! Hãy mở khóa nhóm hoặc bấm ↺ Xóa lịch sử.";return}
+    busy=true;$("#go").disabled=true;renderStage();
+    $("#mgt").textContent="📡 Radar đang quét khu vực…";
+    await sleep(700);
+    const g=await milHunt("bl",c=>`📡 Còn ${c} mục tiêu khả nghi…`,avail,"#radar",
+      {fake:"⚠ Tín hiệu nhiễu — chưa phải mục tiêu!",charge:"⚠ Tín hiệu nhiễu… đang dò lại"});
+    await mFire("bl"+g);
+    milG=g;busy=false;
+    renderStage();                                   /* dựng lại ở trạng thái "đã khóa nhóm" + bộ chỉnh số thành viên */
+    $("#go").disabled=false;
+  }else{                                             /* BƯỚC 2: chọn thành viên trong nhóm đã khóa */
+    busy=true;$("#go").disabled=true;
+    document.querySelectorAll(".szb").forEach(b=>b.disabled=true);
+    const g=milG,n=milSize(g);
+    $("#mgt").textContent=`🪖 NHÓM ${g+1}: đang xác định chiến sĩ…`;
+    await sleep(600);
+    const s=await milHunt("sd",c=>`🪖 Nhóm ${g+1} · còn ${c} chiến sĩ…`,[...Array(n).keys()],"#squad",
+      {fake:"⚠ Tín hiệu nhiễu — chưa phải chiến sĩ này!",charge:"⚠ Tín hiệu nhiễu… đang dò lại"});
+    await mFire("sd"+s);
+    hist.push([g,s]);milG=null;
+    await sleep(400);
+    $("#em").textContent="🎖️";$("#ovt").textContent="Nhiệm vụ giao cho…";
+    $("#who").innerHTML=`Nhóm ${g+1}<br><span style="font-size:.62em;color:var(--ink)">Thành viên số ${s+1} / ${n}</span>`;
+    $("#pun").style.display="none";
+    $("#ov").classList.add("show");confetti();fanfare();
+  }
 }
 /* --- Hố đen --- */
 function initHole(){
@@ -486,6 +660,61 @@ async function lqPlay(){
   busy=false;$("#go").disabled=false;
 }
 renderTabs();renderChips();
+
+/* --- Toàn màn hình (iPhone không hỗ trợ API thật -> dùng chế độ phóng to giả) --- */
+let pseudoFs=false;
+const inFs=()=>document.fullscreenElement||document.webkitFullscreenElement;
+function syncFs(){
+  const f=!!inFs()||pseudoFs;
+  document.body.classList.toggle("fs",f);
+  $("#fsb").innerHTML=f?'✕<span class="lb"> Thoát</span>':'⛶<span class="lb"> Toàn màn hình</span>';
+}
+$("#fsb").onclick=()=>{
+  const el=document.documentElement,req=el.requestFullscreen||el.webkitRequestFullscreen;
+  if(inFs())(document.exitFullscreen||document.webkitExitFullscreen).call(document);
+  else if(pseudoFs){pseudoFs=false;syncFs()}
+  else if(req){try{const r=req.call(el);if(r&&r.catch)r.catch(()=>{pseudoFs=true;syncFs()})}catch(e){pseudoFs=true;syncFs()}}
+  else{pseudoFs=true;syncFs()}
+};
+document.addEventListener("fullscreenchange",syncFs);
+document.addEventListener("webkitfullscreenchange",syncFs);
+
+/* --- Logo: logo ĐHSP TP.HCM (vector hóa từ ảnh gốc) + lớp "CNTT": nhị phân trên thanh sách, con trỏ terminal, chip </>, mạch điện, electron --- */
+const LOGO_P={light:"M86,834L87,835L697,835L704,836L715,840L721,844L731,855L740,875L748,908L755,878L759,866L766,853L779,841L788,837L799,835L1427,835L1428,834L1428,376L1805,0L794,0L769,15L749,32L747,32L720,8L706,0L0,0L0,3L3,6L86,203Z",blue:"M515,664L514,671L519,672L520,665ZM1049,610L1048,611L1048,671L1049,672L1054,671L1054,644L1056,642L1081,642L1083,644L1083,671L1088,672L1089,671L1089,611L1088,610L1083,611L1083,634L1081,636L1056,636L1054,634L1054,611ZM989,610L988,611L988,671L989,672L993,671L993,626L995,625L1021,670L1023,672L1028,672L1029,671L1029,611L1028,610L1023,611L1023,655L1021,656L995,611ZM963,610L962,611L962,671L967,672L968,671L968,611ZM893,610L892,611L892,671L893,672L898,671L898,625L899,624L902,628L914,671L919,672L923,663L933,627L936,624L937,625L936,627L936,671L941,672L942,671L942,611L941,610L933,611L920,658L917,661L903,613L901,610ZM841,610L840,611L840,671L845,672L846,671L846,611ZM779,610L778,611L778,671L779,672L784,671L784,644L786,642L811,642L813,644L813,671L818,672L819,671L819,611L818,610L813,611L813,634L811,636L786,636L784,634L784,611ZM567,610L566,611L566,671L567,672L572,671L572,644L574,642L599,642L601,644L601,671L606,672L607,671L607,611L606,610L601,611L601,634L599,636L574,636L572,634L572,611ZM496,611L490,610L467,610L466,611L466,671L467,672L472,671L472,648L474,646L493,646L500,643L505,636L506,631L505,620L502,615ZM472,618L474,616L487,616L495,618L498,621L500,627L498,635L491,640L474,640L472,638ZM411,610L410,611L411,616L426,616L428,618L428,671L433,672L434,671L434,618L436,616L451,616L452,611L451,610ZM737,609L727,613L721,619L716,632L716,649L721,663L728,670L737,673L743,673L750,671L758,664L762,653L757,651L751,662L745,666L738,667L731,664L726,659L723,652L722,635L726,623L732,617L738,615L743,615L748,617L756,628L760,627L761,624L758,618L752,612L745,609ZM646,609L636,613L629,621L625,632L625,650L628,659L635,668L643,672L653,673L663,669L671,660L675,647L675,635L674,629L670,620L662,612L654,609ZM647,615L652,615L659,618L665,624L669,637L669,645L666,656L659,664L651,667L644,666L638,662L634,657L631,648L631,635L633,627L640,618ZM851,594L845,594L842,598L840,605L844,605ZM640,603L640,605L645,605L650,599L654,605L660,605L653,594L647,594ZM656,582L663,593L666,593L667,591L664,584L662,582ZM828,304L827,305L827,315L836,316L837,315L837,305ZM665,304L664,305L664,315L673,316L674,315L674,305ZM750,233L749,234L749,297L750,298L760,297L760,271L762,269L781,269L783,271L783,297L793,298L794,297L794,234L793,233L783,234L783,257L781,259L762,259L760,257L760,234ZM705,233L704,234L704,297L714,298L715,297L715,234ZM664,233L662,235L648,279L646,282L646,285L643,291L643,294L641,297L642,298L652,298L656,286L659,283L679,283L682,286L686,298L696,298L697,296L676,235L674,233ZM668,250L671,252L677,271L675,273L663,273L661,271ZM590,233L589,234L589,260L583,262L583,268L589,271L589,297L590,298L615,298L626,294L633,285L636,274L636,257L631,242L624,235L618,233ZM602,243L614,243L617,244L623,250L625,256L625,275L623,281L617,287L602,288L600,286L600,271L602,269L612,268L611,261L601,261L600,260L600,245ZM892,231L886,232L880,235L871,245L868,254L867,270L869,281L873,289L879,295L888,299L898,299L904,297L911,291L916,279L907,275L903,283L899,287L891,289L885,286L879,277L878,271L878,259L880,251L889,242L896,242L900,244L906,253L914,251L916,249L912,240L907,235L901,232ZM830,231L819,234L809,244L805,256L805,275L810,288L817,295L827,299L838,299L847,295L854,288L857,282L859,274L859,256L856,246L849,237L840,232ZM828,242L836,242L840,244L845,249L848,257L847,277L845,281L839,287L834,289L825,287L819,281L816,273L817,253L819,249ZM1153,291L1456,291L1544,202L1241,202ZM127,793L128,794L708,794L716,796L724,800L733,809L738,818L742,830L747,859L749,858L750,849L756,826L764,810L774,800L791,794L1386,794L1387,793L1387,361L1386,360L1083,360L993,450L993,451L1295,451L1297,453L1297,702L1295,704L786,704L776,708L766,717L757,730L748,747L746,746L741,734L731,719L722,710L709,704L219,704L217,702L217,195L191,134L193,132L715,132L726,137L736,150L743,168L747,192L748,192L753,167L760,150L772,136L782,132L1615,132L1704,42L789,42L777,47L765,58L756,71L749,85L746,84L741,72L732,58L721,47L710,42L64,42L63,43L127,196Z",red:"M860,351L847,349L768,349L768,550L799,550L800,549L800,476L802,474L837,474L838,473L849,473L862,470L870,466L882,455L890,441L895,417L895,404L892,386L886,372L881,365L871,356ZM801,384L803,382L827,382L828,383L839,383L849,387L856,394L860,403L860,419L856,428L848,436L840,439L803,440L801,438ZM661,349L652,351L639,357L625,371L619,383L616,395L617,418L622,431L629,441L637,448L649,455L679,466L695,474L701,480L704,491L702,500L698,507L690,514L679,518L666,518L652,513L643,504L640,499L635,481L606,480L605,490L608,506L614,521L620,530L631,540L643,546L654,549L686,550L701,546L709,542L720,533L727,523L732,512L735,500L735,476L730,460L725,452L715,442L699,433L666,421L655,415L649,409L647,405L647,394L649,390L656,384L664,381L675,380L689,383L697,389L702,398L705,411L736,411L736,399L734,389L729,376L722,366L714,359L702,353L691,350ZM397,203L386,208L376,219L368,234L362,254L360,257L333,252L317,252L305,255L294,263L290,273L290,281L293,291L302,307L320,328L309,339L298,354L291,370L290,382L293,390L298,396L305,400L312,402L331,403L355,399L359,397L362,401L369,423L379,440L385,446L394,451L404,452L414,448L424,438L434,420L441,398L446,398L461,402L483,403L499,399L508,391L511,384L511,372L507,360L496,343L482,327L495,313L503,302L510,287L511,271L508,264L501,257L490,253L468,252L446,257L441,257L434,235L428,223L420,212L408,204ZM399,382L402,382L419,390L424,391L428,394L423,412L418,423L414,429L404,438L396,437L386,427L379,413L373,395L375,392L385,389ZM433,367L432,378L430,380L418,375L418,373L430,366ZM368,366L370,365L381,371L383,375L372,380L369,375ZM471,337L487,353L497,370L498,380L494,386L488,389L482,390L462,389L448,386L444,383L448,355ZM328,338L331,337L354,355L355,369L357,377L356,385L339,389L319,390L311,388L305,383L303,377L305,369L309,361ZM450,319L453,320L461,327L451,336L449,335L449,320ZM350,319L353,320L353,335L350,336L341,328ZM400,288L424,300L433,306L436,311L436,344L435,347L427,353L402,367L383,358L370,350L366,346L366,308L386,295ZM418,280L430,275L432,277L433,289L431,290L419,283ZM383,280L381,284L370,290L368,288L369,280L372,275ZM446,270L468,265L484,265L496,271L498,275L498,281L493,293L482,308L472,318L448,300L444,274ZM311,267L318,265L333,265L350,268L358,272L356,279L354,300L331,318L318,306L311,297L305,286L303,277L305,272ZM398,217L406,218L415,227L421,238L428,258L428,261L426,263L414,267L402,273L375,263L373,261L377,247L383,233L388,225L394,219Z"};
+function logoSVG(u){
+  if(ASSETS.logo)return `<img src="${ASSETS.logo}" alt="Logo">`;
+  const bits=t=>{const b=[...String(t).toUpperCase().replace(/[^A-Z0-9]/g,"")].map(c=>c.charCodeAt(0).toString(2).padStart(8,"0")).join(" ");return (b||"01010011 01010000")+" "};
+  const run=(t,w)=>{const n=Math.round(w/21),b=bits(t);let o="";while(o.length<n)o+=b;return o.slice(0,n).trim()};
+  const mono='font-family="ui-monospace,Consolas,Menlo,monospace"',cy="#19c3ff";
+  const tx=(x,y,w,t)=>`<text x="${x}" y="${y}" ${mono} font-size="34" font-weight="700" fill="#7fdcff" opacity=".6" textLength="${w}" lengthAdjust="spacing">${run(t,w)}</text>`;
+  const dot=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${cy}" stroke="#fff" stroke-width="4"/>`;
+  const trace=(d)=>`<path d="${d}" fill="none" stroke="${cy}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>`;
+  let pins="";for(const y of [468,520,572,624])pins+=`<line x1="1760" y1="${y}" x2="1784" y2="${y}"/>`;
+  for(const x of [1600,1660,1720])pins+=`<line x1="${x}" y1="398" x2="${x}" y2="420"/><line x1="${x}" y1="684" x2="${x}" y2="706"/>`;
+  return `<svg viewBox="0 0 1806 912" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo ${SCHOOL.short} - ${SCHOOL.dept}">
+<path d="${LOGO_P.light}" fill="#f5f4f9" fill-rule="evenodd"/>
+<path d="${LOGO_P.blue}" fill="#0c4874" fill-rule="evenodd"/>
+<path d="${LOGO_P.red}" fill="#d1373e" fill-rule="evenodd"/>
+${tx(840,100,720,SCHOOL.dept)}${tx(250,762,440,SCHOOL.code)}${tx(815,762,450,SCHOOL.dept)}
+<rect x="1108" y="662" width="44" height="10" fill="${cy}"><animate attributeName="opacity" values="1;1;0;0;1" dur="1.1s" repeatCount="indefinite"/></rect>
+${trace("M1394 468H1470L1500 498H1560")}${trace("M1394 546H1560")}${trace("M1394 624H1470L1500 594H1560")}
+${dot(1388,468,11)}${dot(1388,546,11)}${dot(1388,624,11)}${dot(1705,42,11)}${dot(127,795,11)}
+<g stroke="${cy}" stroke-width="7" stroke-linecap="round">${pins}</g>
+<rect x="1560" y="420" width="200" height="264" rx="24" fill="#0c4874" stroke="${cy}" stroke-width="7"/>
+<text x="1660" y="528" text-anchor="middle" ${mono} font-size="78" font-weight="800" fill="#7fe9ff">&lt;/&gt;</text>
+<rect x="1610" y="556" width="100" height="9" rx="4" fill="#d1373e"/>
+<text x="1660" y="632" text-anchor="middle" ${mono} font-size="${SCHOOL.dept.length>5?38:48}" font-weight="800" fill="#fff">${SCHOOL.dept}</text>
+${dot(401,205,13)}${dot(292,284,13)}${dot(510,372,13)}${dot(401,452,13)}
+</svg>`;
+}
+function renderBrand(){
+  $("#brandLogo").innerHTML=logoSVG("lb");$("#ovlogo").innerHTML=logoSVG("lo");
+  $("#brandName").textContent=SCHOOL.name;$("#brandSub").textContent=SCHOOL.sub;
+  const fav="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='#0c4874'/><text x='50' y='58' text-anchor='middle' font-family='Arial,sans-serif' font-size='50' font-weight='800' fill='#fff'>SP</text><text x='50' y='86' text-anchor='middle' font-family='monospace' font-size='22' font-weight='800' fill='#19c3ff'>&lt;/&gt;</text></svg>";
+  let l=document.querySelector("link[rel=icon]");if(!l){l=document.createElement("link");l.rel="icon";document.head.appendChild(l)}
+  l.href="data:image/svg+xml,"+encodeURIComponent(fav);
+}
+renderBrand();
 </script>
 </body>
 </html>
