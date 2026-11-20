@@ -455,7 +455,7 @@ async function gPlay(){
 let milG=null;const gsz=new Map();                       /* số thành viên riêng của từng nhóm (mặc định = P) */
 function milSize(g){return gsz.has(g)?gsz.get(g):P}
 const milSquad=n=>Array.from({length:n},(_,i)=>`<div class="sd" id="sd${i}"><span>🪖</span>Chiến sĩ ${i+1}</div>`).join("");
-const milMsg=()=>milG===null?`Bấm “Quét mục tiêu” để radar chọn nhóm · bấm vào một mục tiêu để khóa 🔒`
+const milMsg=()=>milG===null?`Bấm “Quét mục tiêu” để radar chọn nhóm `
   :`🎯 MỤC TIÊU ĐÃ BỊ KHÓA: <b>NHÓM ${milG+1}</b><br>Chỉnh số thành viên nếu cần, rồi bấm “Chọn thành viên” (đang chọn trong ${milSize(milG)} người)`;
 function milStage(){
   const dn=doneG();
